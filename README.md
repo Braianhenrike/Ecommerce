@@ -1,15 +1,18 @@
-E-commerce Project
-Este projeto de e-commerce utiliza um microserviço em Java para autenticação de usuário e possui um frontend em React com Reactstrap e SCSS para estilização.
+# E-commerce Project
 
-Tecnologias Utilizadas
-Java (Microserviço de Autenticação)
-React
-Reactstrap
-SCSS
-Funcionalidades Implementadas
-Autenticação de Usuário
-Registro de Usuário
-Login
-Autenticação Baseada em Token
-Em Andamento
-A construção deste projeto está em progresso, com a parte de visualização de produtos já em desenvolvimento. As funcionalidades de criação de produto, alteração de produto e pagamento serão implementadas nas próximas etapas.
+This e-commerce project utilizes a Java microservice for user authentication and features a React frontend with Reactstrap and SCSS for styling.
+
+## Technologies Used
+- Java (Authentication Microservice)
+- React
+- Reactstrap
+- SCSS
+
+## Implemented Features
+- User Authentication
+- User Registration
+- Login
+- Token-Based Authentication
+
+## In Progress
+The project is currently under development, with the product viewing functionality already in progress. The features for product creation, product modification, and payment will be implemented in upcoming stages.
