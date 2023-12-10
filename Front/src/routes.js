@@ -21,6 +21,7 @@ var routes = [
     icon: "tim-icons icon-atom",
     component: Produtos,
     layout: "/user",
+    admin: true,
   },
   {
     path: "/notifications",

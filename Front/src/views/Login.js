@@ -4,7 +4,6 @@ import { useHistory } from "react-router-dom";
 
 import { request } from '../axios_helper';
 
-// reactstrap components
 import {
   Button,
   Card,

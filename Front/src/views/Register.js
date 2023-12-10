@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { request, setAuthHeader } from '../axios_helper';
 
-// reactstrap components
+
 import {
   Button,
   Card,

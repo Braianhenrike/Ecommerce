@@ -1,21 +1,4 @@
-/*!
-
-=========================================================
-* Black Dashboard React v1.2.1
-=========================================================
- 
-* Product Page: https://www.creative-tim.com/product/black-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/black-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Route,
   Switch,
@@ -23,10 +6,10 @@ import {
   useLocation,
   useHistory,
 } from "react-router-dom";
-// javascript plugin used to create scrollbars on windows
+
 import PerfectScrollbar from "perfect-scrollbar";
 
-// core components
+
 import UserNavbar from "components/Navbars/UserNavbar.js";
 import Footer from "components/Footer/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
@@ -42,16 +25,28 @@ function User(props) {
   const location = useLocation();
   const mainPanelRef = React.useRef(null);
   const history = useHistory();
+  const [isAdmin, setIsAdmin] = useState(false);
   const [sidebarOpened, setsidebarOpened] = React.useState(
     document.documentElement.className.indexOf("nav-open") !== -1
   );
-  React.useEffect(() => {
+  useEffect(() => {
+    const apiToken = localStorage.getItem("apiToken");
+    const storedRole = localStorage.getItem("apiRole");
+
+    if (apiToken === null || storedRole === null) {
+      history.push("/auth/login");
+    } else {
+      setIsAdmin(storedRole === 'admin');
+    }
+
+  }, [history]);
+  useEffect(() => {
     const apiToken = localStorage.getItem("apiToken");
 
     if (apiToken === 0) {
       history.push("/auth/login");
     }
-    
+
   }, [history]);
   React.useEffect(() => {
     if (navigator.platform.indexOf("Win") > -1) {
@@ -65,7 +60,7 @@ function User(props) {
         ps = new PerfectScrollbar(tables[i]);
       }
     }
-    // Specify how to clean up after this effect:
+
     return function cleanup() {
       if (navigator.platform.indexOf("Win") > -1) {
         ps.destroy();
@@ -87,14 +82,15 @@ function User(props) {
       mainPanelRef.current.scrollTop = 0;
     }
   }, [location]);
-  // this function opens and closes the sidebar on small devices
+
   const toggleSidebar = () => {
     document.documentElement.classList.toggle("nav-open");
     setsidebarOpened(!sidebarOpened);
   };
-  const getRoutes = (routes) => {
+  const getRoutes = (routes, isAdmin) => {
     return routes.map((prop, key) => {
-      if (prop.layout === "/user") {
+  
+      if (prop.layout === "/user" && (isAdmin || !prop.admin)) {
         return (
           <Route
             path={prop.layout + prop.path}
@@ -107,6 +103,7 @@ function User(props) {
       }
     });
   };
+  
   const getBrandText = (path) => {
     for (let i = 0; i < routes.length; i++) {
       if (location.pathname.indexOf(routes[i].layout + routes[i].path) !== -1) {
@@ -136,12 +133,12 @@ function User(props) {
                 sidebarOpened={sidebarOpened}
               />
               <Switch>
-                {getRoutes(routes)}
+                {getRoutes(routes, isAdmin)}
                 <Redirect from="*" to="/auth/login" />
               </Switch>
               {
-                // we don't want the Footer to be rendered on map page
-                location.pathname === "/user/maps" ? null : <Footer fluid />
+
+                location.pathname === "/user/user-profile" ? null : <Footer fluid />
               }
             </div>
           </div>

@@ -4,7 +4,7 @@ import classNames from "classnames";
 
 import { Line } from "react-chartjs-2";
 
-// reactstrap components
+
 import {
   Button,
   ButtonGroup,
@@ -25,7 +25,7 @@ import {
   UncontrolledTooltip,
 } from "reactstrap";
 
-// core components
+
 import {
   chartExample1,
   chartExample4,
@@ -38,84 +38,84 @@ function Dashboard(props) {
   };
 
   const [chartData1, setChartData1] = React.useState(undefined);
-  const [chartRef1,setChartRef1] = React.useState(null);
-  const [chartRef4,setChartRef4] = React.useState(null);
+  const [chartRef1, setChartRef1] = React.useState(null);
+  const [chartRef4, setChartRef4] = React.useState(null);
 
-  // function to retrieve data from the database in a format suitable for chart 1
+
   React.useEffect(() => {
     async function getChartData1() {
       const canvas = chartRef1;
       const data = 10;
-         
-        let ctx = canvas.ctx;
 
-        let gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
+      let ctx = canvas.ctx;
 
-        gradientStroke.addColorStop(1, "rgba(29,140,248,0.2)");
-        gradientStroke.addColorStop(0.4, "rgba(29,140,248,0.0)");
-        gradientStroke.addColorStop(0, "rgba(29,140,248,0)"); //blue colors
+      let gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
 
-        var labels = data.labels;
-        var chartData = data.data;
-        setChartData1({
-          labels: labels,
-          datasets: [
-            {
-              label: "Tasks",
-              fill: true,
-              backgroundColor: gradientStroke,
-              borderColor: "#1f8ef1",
-              borderWidth: 2,
-              borderDash: [],
-              borderDashOffset: 0.0,
-              pointBackgroundColor: "#1f8ef1",
-              pointBorderColor: "rgba(255,255,255,0)",
-              pointHoverBackgroundColor: "#1f8ef1",
-              pointBorderWidth: 20,
-              pointHoverRadius: 4,
-              pointHoverBorderWidth: 15,
-              pointRadius: 4,
-              data: chartData,
-            },
-          ],
-        });
-      
+      gradientStroke.addColorStop(1, "rgba(29,140,248,0.2)");
+      gradientStroke.addColorStop(0.4, "rgba(29,140,248,0.0)");
+      gradientStroke.addColorStop(0, "rgba(29,140,248,0)");
+
+      var labels = data.labels;
+      var chartData = data.data;
+      setChartData1({
+        labels: labels,
+        datasets: [
+          {
+            label: "Tasks",
+            fill: true,
+            backgroundColor: gradientStroke,
+            borderColor: "#1f8ef1",
+            borderWidth: 2,
+            borderDash: [],
+            borderDashOffset: 0.0,
+            pointBackgroundColor: "#1f8ef1",
+            pointBorderColor: "rgba(255,255,255,0)",
+            pointHoverBackgroundColor: "#1f8ef1",
+            pointBorderWidth: 20,
+            pointHoverRadius: 4,
+            pointHoverBorderWidth: 15,
+            pointRadius: 4,
+            data: chartData,
+          },
+        ],
+      });
+
     }
     if (!chartData1 && chartRef1) {
       getChartData1();
     }
-  }, [chartData1, chartRef1]); 
+  }, [chartData1, chartRef1]);
 
- 
 
-  const tableDataHeaders = ["name","country","city","salary"]
+
+  const tableDataHeaders = ["name", "country", "city", "salary"]
   const TableData = [
-      {
-          name: "Dakota Rice",
-          country: "Niger",
-          city: "Oud-Turnhout",
-          salary: "$36,738"
-      },
-      {
-          name: "Minerva Hooper",
-          country: "Curaçao",
-          city: "Sinaai-Waas",
-          salary: "$23,789"
-      },
-      {
-          name: "Sage Rodriguez",
-          country: "Netherlands",
-          city: "Baileux",
-          salary: "$56,142"
-      },
-      {
-          name: "Philip Chaney",
-          country: "Korea, South",
-          city: "Overland Park",
-          salary: "$38,735"
-      },
-  ] 
- 
+    {
+      name: "Dakota Rice",
+      country: "Niger",
+      city: "Oud-Turnhout",
+      salary: "$36,738"
+    },
+    {
+      name: "Minerva Hooper",
+      country: "Curaçao",
+      city: "Sinaai-Waas",
+      salary: "$23,789"
+    },
+    {
+      name: "Sage Rodriguez",
+      country: "Netherlands",
+      city: "Baileux",
+      salary: "$56,142"
+    },
+    {
+      name: "Philip Chaney",
+      country: "Korea, South",
+      city: "Overland Park",
+      salary: "$38,735"
+    },
+  ]
+
 
   return (
     <>
@@ -233,7 +233,7 @@ function Dashboard(props) {
           </Col>
         </Row>
         <Row>
-        
+
           <Col lg="6" md="12">
           </Col>
           <Col lg="6" md="12">

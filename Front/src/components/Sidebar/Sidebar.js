@@ -10,7 +10,6 @@ import PerfectScrollbar from "perfect-scrollbar";
 import { Nav, NavLink as ReactstrapNavLink } from "reactstrap";
 import {
   BackgroundColorContext,
-  backgroundColors
 } from "contexts/BackgroundColorContext";
 
 var ps;
@@ -25,6 +24,16 @@ function Sidebar(props) {
 
   const filterAuthRoutes = (routes) => {
     return routes.filter((route) => !route.layout.includes("/auth"));
+  };
+  
+  const filterAdminRoutes = (routes) => {
+    return routes.filter((route) => !route.admin);
+  };
+
+  const filterAuthAdminRoutes = (routes) => {
+    const authRoutes = filterAuthRoutes(routes);
+    const adminRoutes = filterAdminRoutes(authRoutes);
+    return adminRoutes;
   };
 
   React.useEffect(() => {
@@ -44,7 +53,7 @@ function Sidebar(props) {
 
   const { routes, rtlActive, logo } = props;
 
-  let filteredRoutes = filterAuthRoutes(routes);
+  const filteredRoutes = filterAuthAdminRoutes(routes);
 
   let logoImg = null;
 
