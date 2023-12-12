@@ -44,6 +44,7 @@
 
 // Custom components
 
+@import "black-dashboard-react/custom/carousel-caption.scss";
 @import "black-dashboard-react/custom/alerts.scss";
 @import "black-dashboard-react/custom/badges.scss";
 @import "black-dashboard-react/custom/buttons.scss";
@@ -79,6 +80,7 @@
 @import "black-dashboard-react/custom/cards/card-user";
 @import "black-dashboard-react/custom/cards/card-task";
 @import "black-dashboard-react/custom/cards/card-plain";
+
 
 // React differences
 @import "black-dashboard-react/react-differences/react-differences";

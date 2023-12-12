@@ -1,5 +1,5 @@
-import React from "react";
-import { NavLink, Link, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { NavLink, Link, useLocation, useHistory } from "react-router-dom";
 
 import { PropTypes } from "prop-types";
 
@@ -16,7 +16,20 @@ var ps;
 
 function Sidebar(props) {
   const location = useLocation();
+
+  const history = useHistory();
   const sidebarRef = React.useRef(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const storedRole = localStorage.getItem("apiRole");
+
+    if (storedRole === 'admin') {
+      setIsAdmin(true);
+      console.log("é admin");
+    }
+
+  }, [history]);
 
   const activeRoute = (routeName) => {
     return location.pathname === routeName ? "active" : "";
@@ -25,16 +38,27 @@ function Sidebar(props) {
   const filterAuthRoutes = (routes) => {
     return routes.filter((route) => !route.layout.includes("/auth"));
   };
-  
+
   const filterAdminRoutes = (routes) => {
-    return routes.filter((route) => !route.admin);
+    return routes.filter((route) => route.admin);
   };
 
   const filterAuthAdminRoutes = (routes) => {
     const authRoutes = filterAuthRoutes(routes);
-    const adminRoutes = filterAdminRoutes(authRoutes);
-    return adminRoutes;
+
+    if (isAdmin) {
+      console.log(authRoutes);
+      return authRoutes;
+    } else {
+      const adminRoutesFiltered = filterAdminRoutes(authRoutes);
+      const filteredRoutes = authRoutes.filter(
+        (route) => !adminRoutesFiltered.includes(route)
+      );
+      console.log(filteredRoutes);
+      return filteredRoutes;
+    }
   };
+
 
   React.useEffect(() => {
     if (navigator.platform.indexOf("Win") > -1) {
