@@ -88,7 +88,7 @@ function UserProfile() {
                       <FormGroup>
                         <label>Login</label>
                         <Input
-                          placeholder="Company"
+                          placeholder="Login"
                           value={user.login}
                           type="text"
                         />

@@ -1,51 +1,137 @@
-import { Card, CardBody, Row, Col, Button, CardFooter, CardTitle } from "reactstrap";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import {
+  Card,
+  Row,
+  Col,
+  Button,
+} from "reactstrap";
+import {
+  Carousel,
+  CarouselItem,
+  CarouselControl,
+  CarouselIndicators,
+  CarouselCaption,
+} from "reactstrap";
 
-
-
+const products = [
+  {
+    id: 1,
+    title: "Camiseta 1",
+    price: 19.99,
+    image: require("../../assets/img/camiseta1.png"),
+  },
+  {
+    id: 2,
+    title: "Camiseta 2",
+    price: 24.99,
+    image: require("../../assets/img/camiseta2.png"),
+  },
+  {
+    id: 3,
+    title: "Camiseta 3",
+    price: 29.99,
+    image: require("../../assets/img/camiseta3.png"),
+  },
+  {
+    id: 4,
+    title: "Camiseta 4",
+    price: 29.99,
+    image: require("../../assets/img/camiseta4.png"),
+  },
+];
 
 function CardProduct() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [animating, setAnimating] = useState(false);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
-  const [product, setProduct] = useState({
-    id: null,
-    name: "Vai ser o Nome",
-    amount: 3,
-    price: 98.99
-  });
   useEffect(() => {
+    const handleWindowSizeChange = () => {
+      setScreenWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", handleWindowSizeChange);
+    return () => {
+      window.removeEventListener("resize", handleWindowSizeChange);
+    };
   }, []);
-  
-  return (
-    <>
-      <div className="content">
-        <Row>
-          <Col md="12">
-            <Card>
-              <Col>
-                <Button>
-                  <CardTitle>
-                    {product.name}
-                  </CardTitle>
-                  <CardBody className="all-icons">
-                    <img
-                      alt="..."
-                      className="image"
-                      src={require("../../assets/img/camiseta1.png")}
-                    />
 
-                  </CardBody>
-                  <CardFooter>
-                    <p className="text-danger">
-                      {product.price}
-                    </p>
-                  </CardFooter>
-                </Button>
-              </Col>
-            </Card>
+  const next = () => {
+    if (animating) return;
+    const nextIndex = activeIndex === products.length - 1 ? 0 : activeIndex + 1;
+    setActiveIndex(nextIndex);
+  };
+
+  const previous = () => {
+    if (animating) return;
+    const nextIndex = activeIndex === 0 ? products.length - 1 : activeIndex - 1;
+    setActiveIndex(nextIndex);
+  };
+
+  const goToIndex = (newIndex) => {
+    if (animating) return;
+    setActiveIndex(newIndex);
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      next();
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [activeIndex]);
+
+  const slides = products.map((product) => (
+    <CarouselItem
+      key={product.id}>
+      <img
+        src={product.image}
+        alt={product.title}
+        className="custom-carousel-image"
+      />
+      <CarouselCaption
+        captionText={product.title}
+        captionHeader={product.price}
+      />
+    </CarouselItem>
+  ));
+
+  return (
+    <Row>
+      <Col md="12">
+        <Card>
+          <Col>
+            <Button>
+              <Carousel
+                activeIndex={activeIndex}
+                next={next}
+                previous={previous}
+                interval={false}
+                slide={false}
+                className="custom-carousel"
+              >
+                <CarouselIndicators
+                  items={products}
+                  activeIndex={activeIndex}
+                  onClickHandler={goToIndex}
+                />
+                {slides}
+                <CarouselControl
+                  direction="prev"
+                  directionText="Previous"
+                  onClickHandler={previous}
+                />
+                <CarouselControl
+                  direction="next"
+                  directionText="Next"
+                  onClickHandler={next}
+                />
+              </Carousel>
+            </Button>
           </Col>
-        </Row>
-      </div>
-    </>
+        </Card>
+      </Col>
+    </Row>
   );
 }
+
 export default CardProduct;
