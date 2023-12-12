@@ -14,6 +14,7 @@ var routes = [
     icon: "tim-icons icon-atom",
     component: Home,
     layout: "/user",
+    admin: false,
   },
   {
     path: "/Produtos",
@@ -29,6 +30,7 @@ var routes = [
     icon: "tim-icons icon-bell-55",
     component: Notifications,
     layout: "/user",
+    admin: false,
   },
   {
     path: "/dashboard",
@@ -36,6 +38,7 @@ var routes = [
     icon: "tim-icons icon-chart-pie-36",
     component: Dashboard,
     layout: "/user",
+    admin: false,
   },
   {
     path: "/tables",
@@ -43,6 +46,7 @@ var routes = [
     icon: "tim-icons icon-puzzle-10",
     component: TableList,
     layout: "/user",
+    admin: false,
   },
   {
     path: "/user-profile",
@@ -50,6 +54,7 @@ var routes = [
     icon: "tim-icons icon-single-02",
     component: UserProfile,
     layout: "/user",
+    admin: false,
   },
   {
     path: "/login",
@@ -57,6 +62,7 @@ var routes = [
     icon: "tim-icons icon-chart-pie-36",
     component: Login,
     layout: "/auth",
+    admin: false,
   },
   {
     path: "/register",
@@ -64,6 +70,7 @@ var routes = [
     icon: "tim-icons icon-chart-pie-36",
     component: Register,
     layout: "/auth",
+    admin: false,
   },
 ];
 export default routes;

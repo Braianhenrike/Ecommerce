@@ -13,11 +13,6 @@ function Produtos() {
         <CardProduct/>
         <CardProduct/>
         <CardProduct/>
-        <CardProduct/>
-        <CardProduct/>
-        <CardProduct/>
-        <CardProduct/>
-        
       </div>
     </>
   );

@@ -25,21 +25,10 @@ function User(props) {
   const location = useLocation();
   const mainPanelRef = React.useRef(null);
   const history = useHistory();
-  const [isAdmin, setIsAdmin] = useState(false);
   const [sidebarOpened, setsidebarOpened] = React.useState(
     document.documentElement.className.indexOf("nav-open") !== -1
   );
-  useEffect(() => {
-    const apiToken = localStorage.getItem("apiToken");
-    const storedRole = localStorage.getItem("apiRole");
-
-    if (apiToken === null || storedRole === null) {
-      history.push("/auth/login");
-    } else {
-      setIsAdmin(storedRole === 'admin');
-    }
-
-  }, [history]);
+  
   useEffect(() => {
     const apiToken = localStorage.getItem("apiToken");
 
@@ -87,10 +76,10 @@ function User(props) {
     document.documentElement.classList.toggle("nav-open");
     setsidebarOpened(!sidebarOpened);
   };
-  const getRoutes = (routes, isAdmin) => {
+  const getRoutes = (routes) => {
     return routes.map((prop, key) => {
-  
-      if (prop.layout === "/user" && (isAdmin || !prop.admin)) {
+
+      if (prop.layout === "/user") {
         return (
           <Route
             path={prop.layout + prop.path}
@@ -103,7 +92,7 @@ function User(props) {
       }
     });
   };
-  
+
   const getBrandText = (path) => {
     for (let i = 0; i < routes.length; i++) {
       if (location.pathname.indexOf(routes[i].layout + routes[i].path) !== -1) {
@@ -133,7 +122,7 @@ function User(props) {
                 sidebarOpened={sidebarOpened}
               />
               <Switch>
-                {getRoutes(routes, isAdmin)}
+                {getRoutes(routes)}
                 <Redirect from="*" to="/auth/login" />
               </Switch>
               {
