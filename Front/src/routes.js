@@ -33,20 +33,12 @@ var routes = [
     admin: false,
   },
   {
-    path: "/dashboard",
-    name: "Dashboard",
-    icon: "tim-icons icon-chart-pie-36",
-    component: Dashboard,
-    layout: "/user",
-    admin: false,
-  },
-  {
     path: "/tables",
     name: "Banco de dados",
     icon: "tim-icons icon-puzzle-10",
     component: TableList,
     layout: "/user",
-    admin: false,
+    admin: true,
   },
   {
     path: "/user-profile",

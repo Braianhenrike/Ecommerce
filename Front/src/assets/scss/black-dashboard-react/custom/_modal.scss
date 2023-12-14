@@ -1,11 +1,6 @@
-// Modals
-// Design element Dialogs
-// --------------------------------------------------
 .modal-content {
   border: 0;
 
-  // Modal header
-  // Top section of the modal w/ title and dismiss
 
   .modal-header {
     border-bottom: none;
@@ -34,8 +29,6 @@
   }
 
 
-  // Modal body
-  // Where all modal content resides (sibling of .modal-header and .modal-footer)
   .modal-body {
     line-height: 1.9;
 
@@ -43,10 +36,9 @@
       color: $black;
     }
   }
-  // Footer (for actions)
   .modal-footer {
     border-top: 0;
-    -webkit-justify-content: space-between; /* Safari 6.1+ */
+    -webkit-justify-content: space-between; 
     justify-content: space-between;
 
     button {
