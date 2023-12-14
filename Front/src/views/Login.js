@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
 import { request } from '../axios_helper';
@@ -25,6 +24,12 @@ function Login(props) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    localStorage.removeItem("apiUser");
+    localStorage.removeItem("apiToken");
+    localStorage.removeItem("apiRole");
+  }, []);
 
   async function handleSubmit(event) {
     setError(null);

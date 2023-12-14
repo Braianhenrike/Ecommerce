@@ -102,7 +102,6 @@
     }
   }
 
-  // custom file
   .custom-file-input {
     .was-validated &:#{$state},
     &.is-#{$state} {
