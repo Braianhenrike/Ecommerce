@@ -2,6 +2,8 @@ import React, { useState } from "react";
 
 import { createProduto } from '../axios_helper';
 
+import Swal from 'sweetalert2';
+
 import {
   Button,
   Card,
@@ -25,24 +27,62 @@ function Produtos() {
     description: ""
   });
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setProduto((prevProduto) => ({
-      ...prevProduto,
-      [name]: value
-    }));
+  const handleInputChange = async (e) => {
+    const { name, value, type } = e.target;
+
+    if (type === 'file') {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        const arrayBuffer = reader.result;
+        const byteArray = new Uint8Array(arrayBuffer);
+
+        setProduto((prevProduto) => ({
+          ...prevProduto,
+          [name]: Array.from(byteArray),
+        }));
+
+      };
+
+      reader.readAsArrayBuffer(file);
+    } else {
+      setProduto((prevProduto) => ({
+        ...prevProduto,
+        [name]: value,
+      }));
+    }
   };
 
 
   const handleCreate = async () => {
-    console.log(produto);
+
+    if (!produto.name || !produto.image || !produto.price || !produto.amount || !produto.description) {
+      Swal.fire({
+        title: 'Error!',
+        text: 'Por favor, preencha todos os campos antes de criar o produto.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+      return;
+    }
     try {
-
       const createdProduto = await createProduto(produto);
-
-      console.log("Produto criado com sucesso");
+  
+      Swal.fire({
+        title: 'Success!',
+        text: 'Produto criado com sucesso',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      });
+  
     } catch (error) {
-      console.error("Erro ao criar o Produto:", error, "produto:", produto);
+      Swal.fire({
+        title: 'Error!',
+        text: `Erro ao criar o Produto: ${error.message}`,
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
     }
   };
 

@@ -15,9 +15,10 @@ export const updateUser = async (userID, user) => {
 };
 
 export const createProduto = async (product) => {
-  console.log("enviado: ", {product});
-  return request('POST', `/product/admin`, { product });
+  console.log("enviado: ", product);
+  return request('POST', `/product/admin`, product);
 };
+
 
 axios.defaults.baseURL = 'http://localhost:8080';
 

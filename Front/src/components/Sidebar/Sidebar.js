@@ -26,7 +26,6 @@ function Sidebar(props) {
 
     if (storedRole === 'admin') {
       setIsAdmin(true);
-      console.log("é admin");
     }
 
   }, [history]);
@@ -47,14 +46,12 @@ function Sidebar(props) {
     const authRoutes = filterAuthRoutes(routes);
 
     if (isAdmin) {
-      console.log(authRoutes);
       return authRoutes;
     } else {
       const adminRoutesFiltered = filterAdminRoutes(authRoutes);
       const filteredRoutes = authRoutes.filter(
         (route) => !adminRoutesFiltered.includes(route)
       );
-      console.log(filteredRoutes);
       return filteredRoutes;
     }
   };
