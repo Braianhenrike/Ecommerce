@@ -29,14 +29,6 @@ function User(props) {
     document.documentElement.className.indexOf("nav-open") !== -1
   );
   
-  useEffect(() => {
-    const apiToken = localStorage.getItem("apiToken");
-
-    if (apiToken === 0) {
-      history.push("/auth/login");
-    }
-
-  }, [history]);
   React.useEffect(() => {
     if (navigator.platform.indexOf("Win") > -1) {
       document.documentElement.className += " perfect-scrollbar-on";
@@ -110,7 +102,7 @@ function User(props) {
               routes={routes}
               logo={{
                 outterLink: "https://www.creative-tim.com/",
-                text: "Creative Tim",
+                text: "Loja virtual",
                 imgSrc: logo,
               }}
               toggleSidebar={toggleSidebar}
