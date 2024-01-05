@@ -19,6 +19,9 @@ export const createProduto = async (product) => {
   return request('POST', `/product/admin`, product);
 };
 
+export const getAllProducts = async () => {
+  return request('GET', '/product/home');
+};
 
 axios.defaults.baseURL = 'http://localhost:8080';
 

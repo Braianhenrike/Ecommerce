@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+
 import {
   Card,
   Row,
   Col,
   Button,
 } from "reactstrap";
+
 import {
   Carousel,
   CarouselItem,
@@ -13,37 +15,13 @@ import {
   CarouselCaption,
 } from "reactstrap";
 
-const products = [
-  {
-    id: 1,
-    title: "Camiseta 1",
-    price: 19.99,
-    image: require("../../assets/img/camiseta1.png"),
-  },
-  {
-    id: 2,
-    title: "Camiseta 2",
-    price: 24.99,
-    image: require("../../assets/img/camiseta2.png"),
-  },
-  {
-    id: 3,
-    title: "Camiseta 3",
-    price: 29.99,
-    image: require("../../assets/img/camiseta3.png"),
-  },
-  {
-    id: 4,
-    title: "Camiseta 4",
-    price: 29.99,
-    image: require("../../assets/img/camiseta4.png"),
-  },
-];
+import { getAllProducts } from "../../axios_helper"; 
 
 function CardProduct() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [animating, setAnimating] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const handleWindowSizeChange = () => {
@@ -54,6 +32,28 @@ function CardProduct() {
       window.removeEventListener("resize", handleWindowSizeChange);
     };
   }, []);
+
+  useEffect(() => {
+    getAllProducts().then((response) => {
+      const data = response.data; 
+      console.log("Data from backend:", data);
+  
+      if (Array.isArray(data)) {
+        console.log("Setting products in state:", data);
+        setProducts(data);
+      } else {
+        console.log("Data is not an array:", data);
+      }
+    }).catch((error) => {
+      console.error("Error fetching products:", error);
+    });
+  }, []);
+  
+  
+  useEffect(() => {
+    console.log("Products in state:", products);
+  }, [products]);
+  
 
   const next = () => {
     if (animating) return;
@@ -80,20 +80,20 @@ function CardProduct() {
     return () => clearInterval(interval);
   }, [activeIndex]);
 
-  const slides = products.map((product) => (
-    <CarouselItem
-      key={product.id}>
-      <img
-        src={product.image}
-        alt={product.title}
-        className="custom-carousel-image"
-      />
-      <CarouselCaption
-        captionText={product.title}
-        captionHeader={product.price}
-      />
-    </CarouselItem>
-  ));
+  const slides = Array.isArray(products)
+    ? products.map((product) => (
+        <CarouselItem key={product.id}>
+          <img
+            src={`data:image/png;base64,${product.image}`}
+            alt={product.name}
+          />
+          <CarouselCaption
+            captionText={product.name}
+            captionHeader={product.price}
+          />
+        </CarouselItem>
+      ))
+    : null;
 
   return (
     <Row>
