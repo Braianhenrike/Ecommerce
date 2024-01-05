@@ -1,7 +1,6 @@
 import CardProduct from "components/CardProduct/CardProduct";
 import React from "react";
 
-// reactstrap components
 import { Card, CardHeader, Row, Col, CardGroup } from "reactstrap";
 
 
@@ -11,7 +10,8 @@ function Home() {
       <div className="content">
         <Card>
           <CardHeader>Mais vendidos</CardHeader>
-          <CardGroup>
+          <CardGroup className="d-flex justify-content-center align-items-center">
+            <CardProduct />
             <CardProduct />
           </CardGroup>
         </Card>
