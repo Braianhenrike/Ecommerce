@@ -1,6 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import { useHistory } from "react-router-dom";
+import { useCart } from "components/UseCart/UseCart";
 
 import {
   Button,
@@ -25,8 +26,9 @@ function UserNavbar(props) {
   const [collapseOpen, setcollapseOpen] = React.useState(false);
   const [modalSearch, setmodalSearch] = React.useState(false);
   const [color, setcolor] = React.useState("navbar-transparent");
+  const { cart } = useCart();
   const history = useHistory();
-  
+
   React.useEffect(() => {
     window.addEventListener("resize", updateColor);
 
@@ -116,31 +118,11 @@ function UserNavbar(props) {
                   <p className="d-lg-none">Carrinho</p>
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-navbar" right tag="ul">
-                  <NavLink tag="li">
-                    <DropdownItem className="nav-item">
-                      Mike John responded to your email
+                  {cart.map((product) => (
+                    <DropdownItem key={product.id} className="nav-item">
+                      {product.name}
                     </DropdownItem>
-                  </NavLink>
-                  <NavLink tag="li">
-                    <DropdownItem className="nav-item">
-                      You have 5 more tasks
-                    </DropdownItem>
-                  </NavLink>
-                  <NavLink tag="li">
-                    <DropdownItem className="nav-item">
-                      Your friend Michael is in town
-                    </DropdownItem>
-                  </NavLink>
-                  <NavLink tag="li">
-                    <DropdownItem className="nav-item">
-                      Another notification
-                    </DropdownItem>
-                  </NavLink>
-                  <NavLink tag="li">
-                    <DropdownItem className="nav-item">
-                      Another one
-                    </DropdownItem>
-                  </NavLink>
+                  ))}
                 </DropdownMenu>
               </UncontrolledDropdown>
               <UncontrolledDropdown nav>
@@ -163,7 +145,7 @@ function UserNavbar(props) {
                   <DropdownItem divider tag="li" />
                   <NavLink tag="li">
                     <DropdownItem className="nav-item">
-                      <Button  onClick={logout}>
+                      <Button onClick={logout}>
                         <span className="d-md-block">Logout</span>
                       </Button>
                     </DropdownItem>

@@ -15,10 +15,13 @@ import {
   CarouselCaption,
 } from "reactstrap";
 
-import { getAllProducts } from "../../axios_helper"; 
+import { getAllProducts } from "../../axios_helper";
 
-function CardProduct() {
+import { useCart } from "components/UseCart/UseCart";
+
+function CardProduct({ product }) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const { addToCart } = useCart();
   const [animating, setAnimating] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [products, setProducts] = useState([]);
@@ -35,9 +38,9 @@ function CardProduct() {
 
   useEffect(() => {
     getAllProducts().then((response) => {
-      const data = response.data; 
+      const data = response.data;
       console.log("Data from backend:", data);
-  
+
       if (Array.isArray(data)) {
         console.log("Setting products in state:", data);
         setProducts(data);
@@ -48,12 +51,12 @@ function CardProduct() {
       console.error("Error fetching products:", error);
     });
   }, []);
-  
-  
+
+
   useEffect(() => {
     console.log("Products in state:", products);
   }, [products]);
-  
+
 
   const next = () => {
     if (animating) return;
@@ -72,6 +75,10 @@ function CardProduct() {
     setActiveIndex(newIndex);
   };
 
+  const addToCartHandler = () => {
+    addToCart(product);
+  };
+
   useEffect(() => {
     const interval = setInterval(() => {
       next();
@@ -82,17 +89,17 @@ function CardProduct() {
 
   const slides = Array.isArray(products)
     ? products.map((product) => (
-        <CarouselItem key={product.id}>
-          <img
-            src={`data:image/png;base64,${product.image}`}
-            alt={product.name}
-          />
-          <CarouselCaption
-            captionText={product.name}
-            captionHeader={product.price}
-          />
-        </CarouselItem>
-      ))
+      <CarouselItem key={product.id}>
+        <img
+          src={`data:image/png;base64,${product.image}`}
+          alt={product.name}
+        />
+        <CarouselCaption
+          captionText={product.name}
+          captionHeader={product.price}
+        />
+      </CarouselItem>
+    ))
     : null;
 
   return (
@@ -128,6 +135,7 @@ function CardProduct() {
               </Carousel>
             </Button>
           </Col>
+          <Button onClick={addToCartHandler}>Adicionar ao Carrinho</Button>
         </Card>
       </Col>
     </Row>
