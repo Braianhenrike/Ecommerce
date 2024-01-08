@@ -1,5 +1,8 @@
 package com.Auth.controllers;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,5 +25,12 @@ public class ProductController {
     	System.out.println("Received data: " + data);
 		Product productData = data.toProduct();
 		productService.save(productData);
+	}
+    
+    @GetMapping("/home")
+	public List<ProductResponseDTO> findAll(){
+		List<ProductResponseDTO> result = productService.findAll();
+		 return result;
+	
 	}
 }
