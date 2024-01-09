@@ -21,6 +21,7 @@ import { useCart } from "components/UseCart/UseCart";
 
 function CardProduct({ product }) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const { addToCart } = useCart();
   const [animating, setAnimating] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
@@ -70,34 +71,26 @@ function CardProduct({ product }) {
     setActiveIndex(nextIndex);
   };
 
-  const goToIndex = (newIndex) => {
-    if (animating) return;
-    setActiveIndex(newIndex);
-  };
-
-  const addToCartHandler = () => {
+  const handleProdutoClick = (product, index) => {
+    setSelectedProduct(product);
+    setActiveIndex(index);
     addToCart(product);
   };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      next();
-    }, 3000);
 
-    return () => clearInterval(interval);
-  }, [activeIndex]);
 
   const slides = Array.isArray(products)
-    ? products.map((product) => (
+    ? products.map((product, index) => (
       <CarouselItem key={product.id}>
-        <img
-          src={`data:image/png;base64,${product.image}`}
-          alt={product.name}
-        />
-        <CarouselCaption
-          captionText={product.name}
-          captionHeader={product.price}
-        />
+        <Button>
+          <img src={`data:image/png;base64,${product.image}`} alt={product.name} />
+        </Button>
+        <CarouselCaption captionText={product.name} captionHeader={product.price} />
+        <div style={{ position: 'absolute', bottom: 0, width: '100%', textAlign: 'center' }}>
+          <Button onClick={() => handleProdutoClick(product, index)}>
+            Adicionar ao Carrinho
+          </Button>
+        </div>
       </CarouselItem>
     ))
     : null;
@@ -107,35 +100,27 @@ function CardProduct({ product }) {
       <Col md="12">
         <Card>
           <Col>
-            <Button>
-              <Carousel
-                activeIndex={activeIndex}
-                next={next}
-                previous={previous}
-                interval={false}
-                slide={false}
-                className="custom-carousel"
-              >
-                <CarouselIndicators
-                  items={products}
-                  activeIndex={activeIndex}
-                  onClickHandler={goToIndex}
-                />
-                {slides}
-                <CarouselControl
-                  direction="prev"
-                  directionText="Previous"
-                  onClickHandler={previous}
-                />
-                <CarouselControl
-                  direction="next"
-                  directionText="Next"
-                  onClickHandler={next}
-                />
-              </Carousel>
-            </Button>
+            <Carousel
+              activeIndex={activeIndex}
+              next={next}
+              previous={previous}
+              interval={false}
+              slide={false}
+              className="custom-carousel"
+            >
+              {slides}
+              <CarouselControl
+                direction="prev"
+                directionText="Previous"
+                onClickHandler={previous}
+              />
+              <CarouselControl
+                direction="next"
+                directionText="Next"
+                onClickHandler={next}
+              />
+            </Carousel>
           </Col>
-          <Button onClick={addToCartHandler}>Adicionar ao Carrinho</Button>
         </Card>
       </Col>
     </Row>
