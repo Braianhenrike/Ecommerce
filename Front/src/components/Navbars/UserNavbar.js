@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import classNames from "classnames";
 import { useHistory } from "react-router-dom";
 import { useCart } from "components/UseCart/UseCart";
@@ -23,13 +23,19 @@ import {
 } from "reactstrap";
 
 function UserNavbar(props) {
-  const [collapseOpen, setcollapseOpen] = React.useState(false);
-  const [modalSearch, setmodalSearch] = React.useState(false);
-  const [color, setcolor] = React.useState("navbar-transparent");
+  const [collapseOpen, setcollapseOpen] = useState(false);
+  const [modalSearch, setmodalSearch] = useState(false);
+  const [color, setcolor] = useState("navbar-transparent");
   const { cart } = useCart();
   const history = useHistory();
+  const [totalPurchase, setTotalPurchase] = useState(0);
 
-  React.useEffect(() => {
+  useEffect(() => {
+    const total = cart.reduce((acc, product) => acc + product.quantity * product.price, 0);
+    setTotalPurchase(total);
+  }, [cart]);
+
+  useEffect(() => {
     window.addEventListener("resize", updateColor);
 
     return function cleanup() {
@@ -73,6 +79,7 @@ function UserNavbar(props) {
     history.push("/user/user-profile");
   };
 
+
   return (
     <>
       <Navbar className={classNames("navbar-absolute", color)} expand="lg">
@@ -107,22 +114,33 @@ function UserNavbar(props) {
                 </Button>
               </InputGroup>
               <UncontrolledDropdown nav>
-                <DropdownToggle
-                  caret
-                  color="default"
-                  data-toggle="dropdown"
-                  nav
-                >
+                <DropdownToggle caret color="default" data-toggle="dropdown" nav>
                   <div className="notification d-none d-lg-block d-xl-block" />
-                  <i class="tim-icons icon-cart" />
-                  <p className="d-lg-none">Carrinho</p>
+                  <i className="tim-icons icon-cart" />
+                  <p className="d-lg-none text-dark">Carrinho</p>
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-navbar" right tag="ul">
                   {cart.map((product) => (
                     <DropdownItem key={product.id} className="nav-item">
-                      {product.name}
+                      <div>
+                        <img src={`data:image/png;base64,${product.image}`} alt={product.name} />
+                      </div>
+                      <div className="text-dark">
+                        <span>{product.name}</span>
+                      </div>
+                      <div className="text-dark">
+                        <span>Preço: R${product.price}</span>
+                      </div>
+                      <div className="text-dark">
+                        <span>Quantidade: {product.quantity}</span>
+                      </div>
                     </DropdownItem>
                   ))}
+                  <DropdownItem className="nav-item">
+                    <div className="text-dark">
+                      <span>Total da Compra: R${totalPurchase.toFixed(2)}</span>
+                    </div>
+                  </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
               <UncontrolledDropdown nav>
