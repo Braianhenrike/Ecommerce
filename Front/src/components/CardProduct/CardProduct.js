@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 
+import { useHistory } from "react-router-dom"; 
+
+
 import {
   Card,
   Row,
@@ -11,7 +14,6 @@ import {
   Carousel,
   CarouselItem,
   CarouselControl,
-  CarouselIndicators,
   CarouselCaption,
 } from "reactstrap";
 
@@ -26,6 +28,7 @@ function CardProduct({ product }) {
   const [animating, setAnimating] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [products, setProducts] = useState([]);
+  const history = useHistory(); 
 
   useEffect(() => {
     const handleWindowSizeChange = () => {
@@ -40,16 +43,12 @@ function CardProduct({ product }) {
   useEffect(() => {
     getAllProducts().then((response) => {
       const data = response.data;
-      console.log("Data from backend:", data);
 
       if (Array.isArray(data)) {
-        console.log("Setting products in state:", data);
         setProducts(data);
       } else {
-        console.log("Data is not an array:", data);
       }
     }).catch((error) => {
-      console.error("Error fetching products:", error);
     });
   }, []);
 
@@ -71,24 +70,28 @@ function CardProduct({ product }) {
     setActiveIndex(nextIndex);
   };
 
-  const handleProdutoClick = (product, index) => {
+  const handleProdutoClick = (product) => {
     setSelectedProduct(product);
-    setActiveIndex(index);
     addToCart(product);
   };
 
-
+  const ProdutoInfo = (product) => {
+    history.push("/user/Produtos/info", { selectedProduct: product });
+  };
 
   const slides = Array.isArray(products)
-    ? products.map((product, index) => (
+    ? products.map((product) => (
       <CarouselItem key={product.id}>
-        <Button>
-          <img src={`data:image/png;base64,${product.image}`} alt={product.name} />
-        </Button>
+        <img src={`data:image/png;base64,${product.image}`} alt={product.name} />
         <CarouselCaption captionText={product.name} captionHeader={product.price} />
-        <div style={{ position: 'absolute', bottom: 0, width: '100%', textAlign: 'center' }}>
-          <Button onClick={() => handleProdutoClick(product, index)}>
-            Adicionar ao Carrinho
+        <div style={{ position: 'absolute', top: 10, width: '100%', right: '-35%', textAlign: 'center', zIndex: 10 }}>
+          <Button onClick={() => handleProdutoClick(product)}>
+            <i className="tim-icons icon-cart" />
+          </Button>
+        </div>
+        <div style={{ position: 'relative', button: 0, width: '100%', right: '-35%', textAlign: 'center', zIndex: 10 }}>
+          <Button onClick={() => ProdutoInfo(product)}>
+            <i className="tim-icons icon-alert-circle-exc" />
           </Button>
         </div>
       </CarouselItem>
