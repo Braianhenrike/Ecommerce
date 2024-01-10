@@ -13,7 +13,7 @@ import {
   NavbarToggler,
 } from "reactstrap";
 
-function UserNavbar(props) {
+function AuthNavbar(props) {
   const [collapseOpen, setcollapseOpen] = React.useState(false);
   const [modalSearch, setmodalSearch] = React.useState(false);
   const [color, setcolor] = React.useState("navbar-transparent");
@@ -82,4 +82,4 @@ function UserNavbar(props) {
   );
 }
 
-export default UserNavbar;
+export default AuthNavbar;

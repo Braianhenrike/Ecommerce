@@ -68,21 +68,17 @@ function User(props) {
     document.documentElement.classList.toggle("nav-open");
     setsidebarOpened(!sidebarOpened);
   };
+  
   const getRoutes = (routes) => {
-    return routes.map((prop, key) => {
-
-      if (prop.layout === "/user") {
-        return (
-          <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
-            key={key}
-          />
-        );
-      } else {
-        return null;
-      }
-    });
+    return routes
+      .filter((prop) => prop.layout === "/user")
+      .map((filteredProp, key) => (
+        <Route
+          path={filteredProp.layout + filteredProp.path}
+          component={filteredProp.component}
+          key={key}
+        />
+      ));
   };
 
   const getBrandText = (path) => {

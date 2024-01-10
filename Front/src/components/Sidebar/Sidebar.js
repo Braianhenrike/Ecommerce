@@ -44,9 +44,10 @@ function Sidebar(props) {
 
   const filterAuthAdminRoutes = (routes) => {
     const authRoutes = filterAuthRoutes(routes);
+    const filteredRoutes = authRoutes.filter((route) => route.path !== "/Produtos/info");
 
     if (isAdmin) {
-      return authRoutes;
+      return filteredRoutes;
     } else {
       const adminRoutesFiltered = filterAdminRoutes(authRoutes);
       const filteredRoutes = authRoutes.filter(

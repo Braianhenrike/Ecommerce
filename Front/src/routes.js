@@ -1,4 +1,4 @@
-import Dashboard from "views/Dashboard.js";
+import ProdutosInfo from "views/ProdutosInfo.js";
 import Produtos from "views/Produtos.js";
 import Home from "views/Home.js";
 import Notifications from "views/Notifications.js";
@@ -21,6 +21,14 @@ var routes = [
     name: "Produtos",
     icon: "tim-icons icon-atom",
     component: Produtos,
+    layout: "/user",
+    admin: true,
+  },
+  {
+    path: "/Produtos/info",
+    name: "Produtos info",
+    icon: "tim-icons icon-atom",
+    component: ProdutosInfo,
     layout: "/user",
     admin: true,
   },
