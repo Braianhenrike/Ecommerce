@@ -31,7 +31,11 @@ function UserNavbar(props) {
   const [totalPurchase, setTotalPurchase] = useState(0);
 
   useEffect(() => {
-    const total = cart.reduce((acc, product) => acc + product.quantity * product.price, 0);
+    const total = cart.reduce((acc, product) => {
+      const price = parseFloat(product.price) || 0;
+      const quantity = parseInt(product.quantity) || 0;
+      return acc + price * quantity;
+    }, 0);
     setTotalPurchase(total);
   }, [cart]);
 
@@ -136,10 +140,18 @@ function UserNavbar(props) {
                       </div>
                     </DropdownItem>
                   ))}
-                  <DropdownItem className="nav-item">
+                  <DropdownItem >
                     <div className="text-dark">
                       <span>Total da Compra: R${totalPurchase.toFixed(2)}</span>
                     </div>
+                  </DropdownItem>
+                  <DropdownItem className="nav-item">
+                    <Button
+                      color="info"
+                      onClick={goToProfile}
+                    >
+                      <i className="tim-icons icon-basket" /> Finalizar Compra
+                    </Button>
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
