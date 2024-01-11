@@ -1,7 +1,7 @@
 import CardProduct from "components/CardProduct/CardProduct";
 import React from "react";
 
-import { Card, CardHeader, Row, Col, CardGroup } from "reactstrap";
+import { Card, CardHeader, CardGroup } from "reactstrap";
 
 
 function Home() {

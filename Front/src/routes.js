@@ -25,7 +25,7 @@ var routes = [
     admin: true,
   },
   {
-    path: "/Produtos/info",
+    path: "/Produtos-info",
     name: "Produtos info",
     icon: "tim-icons icon-atom",
     component: ProdutosInfo,
