@@ -20,11 +20,13 @@ import {
 import { getAllProducts } from "../../axios_helper";
 
 import { useCart } from "components/UseCart/UseCart";
+import { useProduct } from "components/ProductContext/ProductContext";
 
 function CardProduct({ product }) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState({});
   const { addToCart } = useCart();
+  const { setProduct } = useProduct();
   const [animating, setAnimating] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [products, setProducts] = useState([]);
@@ -76,7 +78,9 @@ function CardProduct({ product }) {
   };
 
   const ProdutoInfo = (product) => {
-    history.push("/user/Produtos/info", { selectedProduct: product });
+    setProduct(product);
+    history.push("/user/Produtos-info", { selectedProduct: product });
+    console.log(product);
   };
 
   const slides = Array.isArray(products)
