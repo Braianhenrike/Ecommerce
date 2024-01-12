@@ -21,7 +21,11 @@ export const CartProvider = ({ children }) => {
   };
 
   const removeFromCart = (productId) => {
-    const updatedCart = cart.filter((product) => product.id !== productId);
+    const updatedCart = cart.map((product) =>
+      product.id === productId
+        ? { ...product, quantity: product.quantity - 1 }
+        : product
+    ).filter((product) => product.quantity > 0); 
     setCart(updatedCart);
   };
 

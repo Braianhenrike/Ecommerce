@@ -74,6 +74,7 @@ function CardProduct({ product }) {
 
   const handleProdutoClick = (product) => {
     setSelectedProduct(product);
+    product.amount = product.amount - 1
     addToCart(product);
   };
 
