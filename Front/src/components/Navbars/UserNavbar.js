@@ -78,6 +78,13 @@ function UserNavbar(props) {
       return;
     };
   };
+  
+  const goToPayment = () => {
+    history.push({
+      pathname: "/user/payment",
+      state: { cart: cart, totalPurchase: totalPurchase.toFixed(2) }
+    });
+  };
 
   const goToProfile = () => {
     history.push("/user/user-profile");
@@ -148,7 +155,7 @@ function UserNavbar(props) {
                   <DropdownItem className="nav-item">
                     <Button
                       color="info"
-                      onClick={goToProfile}
+                      onClick={goToPayment}
                     >
                       <i className="tim-icons icon-basket" /> Finalizar Compra
                     </Button>

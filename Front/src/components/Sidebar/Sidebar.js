@@ -44,7 +44,7 @@ function Sidebar(props) {
 
   const filterAuthAdminRoutes = (routes) => {
     const authRoutes = filterAuthRoutes(routes);
-    const filteredRoutes = authRoutes.filter((route) => route.path !== "/Produtos-info");
+    const filteredRoutes = authRoutes.filter((route) => route.path !== "/Produtos-info"&& route.path !== "/Payment" );
 
     if (isAdmin) {
       return filteredRoutes;
