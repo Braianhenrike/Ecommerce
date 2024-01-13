@@ -1,5 +1,6 @@
 import ProdutosInfo from "views/ProdutosInfo.js";
 import Produtos from "views/Produtos.js";
+import Payment from "views/Payment.js";
 import Home from "views/Home.js";
 import Notifications from "views/Notifications.js";
 import TableList from "views/TableList.js";
@@ -55,6 +56,14 @@ var routes = [
     component: UserProfile,
     layout: "/user",
     admin: false,
+  },
+  {
+    path: "/Payment",
+    name: "Payment",
+    icon: "tim-icons icon-atom",
+    component: Payment,
+    layout: "/user",
+    admin: true,
   },
   {
     path: "/login",
