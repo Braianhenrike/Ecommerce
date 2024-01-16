@@ -10,6 +10,7 @@ public class ProductResponseDTO {
     private Integer amount;
     private String description;
     private byte[] image;
+    private String categoria;
 
     // Construtor vazio
     public ProductResponseDTO() {
@@ -23,6 +24,7 @@ public class ProductResponseDTO {
         this.amount = product.getAmount();
         this.description = product.getDescription();
         this.image = product.getImage();
+        this.categoria = product.getCategoria();
     }
 
     // Métodos getters e setters para os campos
@@ -77,5 +79,13 @@ public class ProductResponseDTO {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+    
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 }

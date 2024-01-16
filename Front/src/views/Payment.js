@@ -2,14 +2,47 @@ import React, { useState, useEffect } from "react";
 import { Card, CardHeader, CardBody, Table, Button } from "reactstrap";
 import { useCart } from "components/UseCart/UseCart";
 import { useLocation } from "react-router-dom";
-import { useProduct } from "components/ProductContext/ProductContext";
+
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 
 function Payment() {
+  const stripe = useStripe();
+  const elements = useElements();
   const location = useLocation();
+
   const { cart, totalPurchase } = location.state || { cart: [], totalPurchase: 0 };
   const { removeFromCart } = useCart();
   const [cartUpdated, setCartUpdated] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [message, setMessage] = useState(null);
+  const stripePromise = loadStripe('sk_test_Ho24N7La5CVDtbmpjc377lJI');
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!stripe || !elements) {
+      return;
+    }
+
+    setIsProcessing(true);
+
+    const { error } = await stripe.confirmPayment({
+      elements,
+      confirmParams: {
+        return_url: `${window.location.origin}/completion`,
+      },
+    });
+
+    if (error?.type === "card_error" || error?.type === "validation_error") {
+      setMessage(error.message);
+    } else {
+      setMessage("An unexpected error occurred.");
+    }
+
+    setIsProcessing(false);
+  };
 
   useEffect(() => {
     if (cartUpdated) {
@@ -30,16 +63,16 @@ function Payment() {
     <div className="content">
       <Card>
         <CardHeader>
-          <h3>Detalhes do Pagamento</h3>
+          <h3>Payment Details</h3>
         </CardHeader>
         <CardBody>
           <Table>
             <thead>
               <tr>
-                <th>Imagem</th>
-                <th>Produto</th>
-                <th>Preço</th>
-                <th>Quantidade</th>
+                <th>Image</th>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
               </tr>
             </thead>
             <tbody>
@@ -61,15 +94,16 @@ function Payment() {
                       size="sm"
                       onClick={() => handleRemoveFromCart(product.id)}
                     >
-                      Remover
+                      Remove
                     </Button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </Table>
-          <div>Total da Compra: R${calculateTotalPurchase()}</div>
-          {/* Adicione aqui os elementos para escolher métodos de pagamento */}
+          <div>Total Purchase: R${calculateTotalPurchase()}</div>
+
+          
         </CardBody>
       </Card>
     </div>
