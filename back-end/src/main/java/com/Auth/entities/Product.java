@@ -27,17 +27,21 @@ public class Product {
     private String description;
     
     private byte[] image;
+
+    @Column(name = "categoria")
+    private String categoria;
     
     public Product() {
     }
     
-    public Product(Long id, String name, String price, Integer amount, String description, byte[] image) {
+    public Product(Long id, String name, String price, Integer amount, String description, byte[] image, String categoria) {
     	this.id = id;
         this.name = name;
         this.price = price;
         this.amount = amount;
         this.description = description;
         this.image = image;
+        this.categoria = categoria;
     }
     
     public Long getId() {
@@ -87,6 +91,14 @@ public class Product {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+    
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 	
 	
