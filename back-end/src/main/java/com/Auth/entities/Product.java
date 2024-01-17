@@ -28,13 +28,14 @@ public class Product {
     
     private byte[] image;
 
-    @Column(name = "categoria")
-    private String categoria;
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    private Categoria categoria;
     
     public Product() {
     }
     
-    public Product(Long id, String name, String price, Integer amount, String description, byte[] image, String categoria) {
+    public Product(Long id, String name, String price, Integer amount, String description, byte[] image, Categoria categoria) {
     	this.id = id;
         this.name = name;
         this.price = price;
@@ -93,11 +94,11 @@ public class Product {
         this.image = image;
     }
     
-    public String getCategoria() {
+    public Categoria getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(String categoria) {
+    public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
 	
