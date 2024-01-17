@@ -19,6 +19,15 @@ export const createProduto = async (product) => {
   return request('POST', `/product/admin`, product);
 };
 
+export const createCategoria = async (categoria) => {
+  console.log("enviado: ", categoria);
+  return request('POST', '/api/categorias', categoria);
+};
+
+export const getAllCategorias = async () => {
+  return request('GET', '/api/categorias');
+};
+
 export const getAllProducts = async () => {
   return request('GET', '/product/home');
 };
