@@ -1,5 +1,6 @@
 package com.Auth.DTO;
 
+import com.Auth.entities.Categoria;
 import com.Auth.entities.Product;
 
 public class ProductResponseDTO {
@@ -10,7 +11,7 @@ public class ProductResponseDTO {
     private Integer amount;
     private String description;
     private byte[] image;
-    private String categoria;
+    private Categoria categoria;
 
     // Construtor vazio
     public ProductResponseDTO() {
@@ -81,11 +82,11 @@ public class ProductResponseDTO {
         this.image = image;
     }
     
-    public String getCategoria() {
+    public Categoria getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(String categoria) {
+    public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
 }

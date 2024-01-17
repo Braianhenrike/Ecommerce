@@ -73,6 +73,7 @@ function Payment() {
                 <th>Product</th>
                 <th>Price</th>
                 <th>Quantity</th>
+                <th>Categoria</th>
               </tr>
             </thead>
             <tbody>
@@ -88,6 +89,7 @@ function Payment() {
                   <td>{product.name}</td>
                   <td>R${product.price}</td>
                   <td>{product.quantity}</td>
+                  <td>{product.categoria}</td>
                   <td>
                     <Button
                       color="danger"
