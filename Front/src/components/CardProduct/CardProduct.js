@@ -1,36 +1,31 @@
 import React, { useState, useEffect } from "react";
-
-import { useHistory } from "react-router-dom"; 
-
-
+import { useHistory } from "react-router-dom";
 import {
   Card,
   Row,
   Col,
   Button,
+  CardHeader,
+  CardGroup,
 } from "reactstrap";
-
 import {
   Carousel,
   CarouselItem,
   CarouselControl,
   CarouselCaption,
 } from "reactstrap";
-
 import { getAllProducts } from "../../axios_helper";
-
 import { useCart } from "components/UseCart/UseCart";
 import { useProduct } from "components/ProductContext/ProductContext";
 
-function CardProduct({ product }) {
+function CardProduct({ category, products }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [selectedProduct, setSelectedProduct] = useState({});
   const { addToCart } = useCart();
   const { setProduct } = useProduct();
   const [animating, setAnimating] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-  const [products, setProducts] = useState([]);
-  const history = useHistory(); 
+  const history = useHistory();
 
   useEffect(() => {
     const handleWindowSizeChange = () => {
@@ -42,27 +37,10 @@ function CardProduct({ product }) {
     };
   }, []);
 
-  useEffect(() => {
-    getAllProducts().then((response) => {
-      const data = response.data;
-
-      if (Array.isArray(data)) {
-        setProducts(data);
-      } else {
-      }
-    }).catch((error) => {
-    });
-  }, []);
-
-
-  useEffect(() => {
-    console.log("Products in state:", products);
-  }, [products]);
-
-
   const next = () => {
     if (animating) return;
-    const nextIndex = activeIndex === products.length - 1 ? 0 : activeIndex + 1;
+    const nextIndex =
+      activeIndex === products.length - 1 ? 0 : activeIndex + 1;
     setActiveIndex(nextIndex);
   };
 
@@ -75,18 +53,16 @@ function CardProduct({ product }) {
   const handleProdutoClick = (product) => {
     setSelectedProduct(product);
     if (product.amount === 0) {
-
-      return
+      return;
     }
 
-    product.amount = product.amount - 1
+    product.amount = product.amount - 1;
     addToCart(product);
   };
 
   const ProdutoInfo = (product) => {
     setProduct(product);
     history.push("/user/Produtos-info", { selectedProduct: product });
-    console.log(product);
   };
 
   const slides = Array.isArray(products)
@@ -112,6 +88,7 @@ function CardProduct({ product }) {
     <Row>
       <Col md="12">
         <Card>
+          <CardHeader>{category}</CardHeader>
           <Col>
             <Carousel
               activeIndex={activeIndex}
