@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { createProduto, createCategoria, getAllCategorias } from '../axios_helper'; 
+import { createProduto, createCategoria, getAllCategorias } from '../axios_helper';
 
 import Swal from 'sweetalert2';
 
@@ -25,9 +25,10 @@ function Produtos() {
     price: "",
     amount: "",
     description: "",
-    categoria: ""
+    categoria: null
   });
 
+  const [ordemCategorias, setOrdemCategorias] = useState([]); 
   const [categorias, setCategorias] = useState([]);
   const [novaCategoria, setNovaCategoria] = useState("");
 
@@ -39,6 +40,9 @@ function Produtos() {
     try {
       const categoriasResponse = await getAllCategorias();
       setCategorias(categoriasResponse.data);
+
+      const ordem = categoriasResponse.data.map((categoria, index) => index + 1);
+      setOrdemCategorias(ordem);
     } catch (error) {
       console.error("Erro ao buscar categorias:", error.message);
     }
@@ -47,34 +51,33 @@ function Produtos() {
 
   const handleInputChange = async (e) => {
     const { name, value, type } = e.target;
-
+  
     if (type === 'file') {
       const file = e.target.files[0];
       const reader = new FileReader();
-
+  
       reader.onloadend = () => {
         const arrayBuffer = reader.result;
         const byteArray = new Uint8Array(arrayBuffer);
-
+  
         setProduto((prevProduto) => ({
           ...prevProduto,
           [name]: Array.from(byteArray),
         }));
-
+  
       };
-
+  
       reader.readAsArrayBuffer(file);
     } else {
       setProduto((prevProduto) => ({
         ...prevProduto,
-        [name]: value,
+        [name]: type === 'select' ? parseInt(value, 10) : value,
       }));
     }
   };
 
 
   const handleCreate = async () => {
-
     if (!produto.name || !produto.image || !produto.price || !produto.amount || !produto.description) {
       Swal.fire({
         title: 'Error!',
@@ -84,16 +87,20 @@ function Produtos() {
       });
       return;
     }
+  
     try {
-      const createdProduto = await createProduto(produto);
-
-      Swal.fire({
-        title: 'Success!',
-        text: 'Produto criado com sucesso',
-        icon: 'success',
-        confirmButtonText: 'OK'
-      });
-
+      if (!produto.categoria) {
+        Swal.fire({
+          title: 'Error!',
+          text: 'Por favor, selecione uma categoria antes de criar o produto.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+        return;
+      }
+  
+      createProductWithCategory(produto.categoria);
+  
     } catch (error) {
       Swal.fire({
         title: 'Error!',
@@ -103,6 +110,31 @@ function Produtos() {
       });
     }
   };
+  
+  const createProductWithCategory = async (ordemCategoriaSelecionada) => {
+    try {
+      const createdProduto = await createProduto({
+        ...produto,
+        categoria: ordemCategoriaSelecionada,
+      });
+  
+      Swal.fire({
+        title: 'Success!',
+        text: 'Produto criado com sucesso',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      });
+  
+    } catch (error) {
+      Swal.fire({
+        title: 'Error!',
+        text: `Erro ao criar o Produto: ${error.message}`,
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    }
+  };
+
   const handleCreateCategoria = async () => {
     try {
       await createCategoria({ nome: novaCategoria });
@@ -169,6 +201,7 @@ function Produtos() {
                           ))}
                         </Input>
                       </FormGroup>
+
                       <FormGroup>
                         <label>Image</label>
                         <Input
