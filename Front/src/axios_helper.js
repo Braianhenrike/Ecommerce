@@ -15,12 +15,12 @@ export const updateUser = async (userID, user) => {
 };
 
 export const createProduto = async (product) => {
-  console.log("enviado: ", product);
+  console.log("Produto enviado: ", product);
   return request('POST', `/product/admin`, product);
 };
 
 export const createCategoria = async (categoria) => {
-  console.log("enviado: ", categoria);
+  console.log("Categoria enviada: ", categoria);
   return request('POST', '/api/categorias', categoria);
 };
 
