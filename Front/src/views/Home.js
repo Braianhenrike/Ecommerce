@@ -5,17 +5,35 @@ import { getAllProducts } from "../axios_helper";
 
 function Home() {
   const [categories, setCategories] = useState([]);
+  const [QuantityCategory, setQuantityCategory] = useState([]);
   const [products, setProducts] = useState([]);
+
 
   useEffect(() => {
     getAllProducts()
       .then((response) => {
         const data = response.data;
         if (Array.isArray(data)) {
-          const uniqueCategories = Array.from(
+          let allCategorias = Array.from(
             new Set(data.map((product) => product.categoria))
           );
+          allCategorias = allCategorias.filter(categoria => categoria !== null);
+
+          const categoryCounts = allCategorias.reduce((counts, categoria) => {
+            const nome = categoria.nome;
+
+            if (nome !== undefined && nome !== null) {
+              counts[nome] = (counts[nome] || 0) + 1;
+            }
+
+            return counts;
+          }, {});
+
+          const uniqueCategories = Object.keys(categoryCounts);
+
+          const quantityCategory = uniqueCategories.length
           setCategories(uniqueCategories);
+          setQuantityCategory(quantityCategory);
           setProducts(data);
         }
       })
@@ -25,25 +43,37 @@ function Home() {
   }, []);
 
   const getProductsByCategory = (categoria) => {
-    const filteredProducts = products.filter((product) => product.categoria.nome === categoria);
-    console.log(`Products for category ${categoria}:`, filteredProducts);
-    return filteredProducts;
+    const filteredProducts = products.filter((product) => product.categoria && product.categoria.nome === categoria);
+    let uniqueProducts = Array.from(new Set(filteredProducts.map((product) => product.nome)));
+  
+    // Contagem de categorias únicas
+    const uniqueCategoriesCount = uniqueProducts.length;
+  
+    return {
+      uniqueCategoriesCount,
+      uniqueProducts: uniqueProducts.map((uniqueProductName) => {
+        return filteredProducts.find((product) => product.nome === uniqueProductName);
+      }),
+    };
   };
+  
 
   return (
     <>
       <div className="content">
-        {categories.map((categoria, index) => (
-          <Card key={`${categoria.nome}_${index}`}>
-            <CardHeader>{categoria.nome}</CardHeader>
-            <CardGroup className="d-flex justify-content-center align-items-center">
-              <CardProduct
-                category={categoria.nome}
-                products={getProductsByCategory(categoria.nome)}
-              />
-            </CardGroup>
-          </Card>
-        ))}
+        {categories.map((categoria, quantityCategory) =>
+          (quantityCategory === 0 || (quantityCategory > 0 && categoria.nome !== categories[quantityCategory - 1].nome)) ? (
+            <Card key={`${categoria.nome}_${quantityCategory}`}>
+              <CardHeader>{categoria.nome}</CardHeader>
+              <CardGroup className="d-flex justify-content-center align-items-center">
+                <CardProduct
+                  category={categoria.nome}
+                  products={getProductsByCategory(categoria.nome)}
+                />
+              </CardGroup>
+            </Card>
+          ) : null
+        )}
       </div>
     </>
   );
