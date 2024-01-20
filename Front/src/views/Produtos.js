@@ -25,10 +25,18 @@ function Produtos() {
     price: "",
     amount: "",
     description: "",
-    categoria: null
+    categoria: ""
+  });
+  const [produtoCreated, setProdutoCreated] = useState({
+    name: "",
+    image: "",
+    price: "",
+    amount: "",
+    description: "",
+    categoria: ""
   });
 
-  const [ordemCategorias, setOrdemCategorias] = useState([]); 
+  const [categoriasID, setCategoriasId] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [novaCategoria, setNovaCategoria] = useState("");
 
@@ -39,10 +47,22 @@ function Produtos() {
   const fetchCategorias = async () => {
     try {
       const categoriasResponse = await getAllCategorias();
-      setCategorias(categoriasResponse.data);
+      let categoriesVerNomes = categoriasResponse.data;
+      let categoriasVerNomes = categoriesVerNomes.filter((element) => element.nome.trim() !== '');
 
-      const ordem = categoriasResponse.data.map((categoria, index) => index + 1);
-      setOrdemCategorias(ordem);
+      setCategorias(categoriasVerNomes);
+
+      const categoriasID = categoriasVerNomes.map((item, index) => ({
+        ...item,
+        id: index + 1,
+      }));
+
+      const categoriasComIdNumerico = categoriasID.map(objeto => ({
+        ...objeto,
+        id: objeto.id.toString(),
+      }))
+      console.log("categoriasComIdNumerico", categoriasComIdNumerico);
+      setCategoriasId(categoriasComIdNumerico);
     } catch (error) {
       console.error("Erro ao buscar categorias:", error.message);
     }
@@ -51,22 +71,22 @@ function Produtos() {
 
   const handleInputChange = async (e) => {
     const { name, value, type } = e.target;
-  
+
     if (type === 'file') {
       const file = e.target.files[0];
       const reader = new FileReader();
-  
+
       reader.onloadend = () => {
         const arrayBuffer = reader.result;
         const byteArray = new Uint8Array(arrayBuffer);
-  
+
         setProduto((prevProduto) => ({
           ...prevProduto,
           [name]: Array.from(byteArray),
         }));
-  
+
       };
-  
+
       reader.readAsArrayBuffer(file);
     } else {
       setProduto((prevProduto) => ({
@@ -78,6 +98,8 @@ function Produtos() {
 
 
   const handleCreate = async () => {
+
+
     if (!produto.name || !produto.image || !produto.price || !produto.amount || !produto.description) {
       Swal.fire({
         title: 'Error!',
@@ -87,7 +109,7 @@ function Produtos() {
       });
       return;
     }
-  
+
     try {
       if (!produto.categoria) {
         Swal.fire({
@@ -98,9 +120,26 @@ function Produtos() {
         });
         return;
       }
-  
-      createProductWithCategory(produto.categoria);
-  
+      const categoriaEncontrada = categoriasID.find(
+        (categoria) => categoria.nome === produto.categoria
+      );
+        console.log("categoriaEncontrada", categoriaEncontrada)
+      if (categoriaEncontrada) {
+        const produtoCreated = {
+          ...produto,
+          categoria: categoriaEncontrada.id,
+        };
+
+        console.log("produto: create", produtoCreated)
+        await createProduto(produtoCreated);
+      } else {
+        Swal.fire({
+          title: 'Error!',
+          text: 'Categoria não encontrada',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
     } catch (error) {
       Swal.fire({
         title: 'Error!',
@@ -110,30 +149,7 @@ function Produtos() {
       });
     }
   };
-  
-  const createProductWithCategory = async (ordemCategoriaSelecionada) => {
-    try {
-      const createdProduto = await createProduto({
-        ...produto,
-        categoria: ordemCategoriaSelecionada,
-      });
-  
-      Swal.fire({
-        title: 'Success!',
-        text: 'Produto criado com sucesso',
-        icon: 'success',
-        confirmButtonText: 'OK'
-      });
-  
-    } catch (error) {
-      Swal.fire({
-        title: 'Error!',
-        text: `Erro ao criar o Produto: ${error.message}`,
-        icon: 'error',
-        confirmButtonText: 'OK'
-      });
-    }
-  };
+
 
   const handleCreateCategoria = async () => {
     try {
