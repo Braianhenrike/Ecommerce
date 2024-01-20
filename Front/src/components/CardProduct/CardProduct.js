@@ -27,6 +27,9 @@ function CardProduct({ category, products }) {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const history = useHistory();
 
+  console.log('category ',category)
+  console.log('products ',products)
+
   useEffect(() => {
     const handleWindowSizeChange = () => {
       setScreenWidth(window.innerWidth);
@@ -66,7 +69,8 @@ function CardProduct({ category, products }) {
   };
 
   const slides = Array.isArray(products)
-    ? products.map((product) => (
+  ? products.map((product) => (
+      product.categoria.nome === category &&
       <CarouselItem key={product.id}>
         <img src={`data:image/png;base64,${product.image}`} alt={product.name} />
         <CarouselCaption captionText={product.name} captionHeader={product.price} />
@@ -88,7 +92,6 @@ function CardProduct({ category, products }) {
     <Row>
       <Col md="12">
         <Card>
-          <CardHeader>{category}</CardHeader>
           <Col>
             <Carousel
               activeIndex={activeIndex}

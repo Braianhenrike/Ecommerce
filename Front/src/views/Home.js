@@ -33,6 +33,7 @@ function Home() {
 
           const quantityCategory = uniqueCategories.length
           setCategories(uniqueCategories);
+          console.log('uniqueCategories', uniqueCategories)
           setQuantityCategory(quantityCategory);
           setProducts(data);
         }
@@ -43,37 +44,37 @@ function Home() {
   }, []);
 
   const getProductsByCategory = (categoria) => {
-    const filteredProducts = products.filter((product) => product.categoria && product.categoria.nome === categoria);
-    let uniqueProducts = Array.from(new Set(filteredProducts.map((product) => product.nome)));
-  
-    // Contagem de categorias únicas
-    const uniqueCategoriesCount = uniqueProducts.length;
-  
-    return {
-      uniqueCategoriesCount,
-      uniqueProducts: uniqueProducts.map((uniqueProductName) => {
-        return filteredProducts.find((product) => product.nome === uniqueProductName);
-      }),
-    };
+    if (!Array.isArray(products)) {
+      console.error("Products is not an array:", products);
+      return [];
+    }
+
+    const produtosDasCategorias = products.filter(
+      (product) => product.categoria && categories.includes(product.categoria.nome));
+    return produtosDasCategorias;
   };
-  
+
 
   return (
     <>
       <div className="content">
-        {categories.map((categoria, quantityCategory) =>
-          (quantityCategory === 0 || (quantityCategory > 0 && categoria.nome !== categories[quantityCategory - 1].nome)) ? (
-            <Card key={`${categoria.nome}_${quantityCategory}`}>
-              <CardHeader>{categoria.nome}</CardHeader>
-              <CardGroup className="d-flex justify-content-center align-items-center">
-                <CardProduct
-                  category={categoria.nome}
-                  products={getProductsByCategory(categoria.nome)}
-                />
-              </CardGroup>
-            </Card>
-          ) : null
-        )}
+        {categories.map((categoria, index) => {
+          const productsByCategory = getProductsByCategory(categoria);
+          
+          return (
+            (index === 0 || (index > 0 && categoria !== categories[index - 1])) ? (
+              <Card key={`${categoria}_${index}`}>
+                <CardHeader>{categoria}</CardHeader>
+                <CardGroup className="d-flex justify-content-center align-items-center">
+                  <CardProduct
+                    category={categoria}
+                    products={productsByCategory}
+                  />
+                </CardGroup>
+              </Card>
+            ) : null
+          );
+        })}
       </div>
     </>
   );
