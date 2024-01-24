@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, CardHeader, CardGroup } from "reactstrap";
+import { Card, CardHeader, CardGroup, Col, Row } from "reactstrap";
 import CardProduct from "components/CardProduct/CardProduct";
 import { getAllProducts } from "../axios_helper";
 
@@ -48,7 +48,7 @@ function Home() {
       console.error("Products is not an array:", products);
       return [];
     }
-  
+
     const produtosDasCategorias = products.filter(
       (product) => product.categoria && product.categoria.nome === categoria);
     return produtosDasCategorias;
@@ -58,23 +58,27 @@ function Home() {
   return (
     <>
       <div className="content">
-        {categories.map((categoria, index) => {
-          const productsByCategory = getProductsByCategory(categoria);
-          
-          return (
-            (index === 0 || (index > 0 && categoria !== categories[index - 1])) ? (
-              <Card key={`${categoria}_${index}`}>
-                <CardHeader>{categoria}</CardHeader>
-                <CardGroup className="d-flex justify-content-center align-items-center">
-                  <CardProduct
-                    category={categoria}
-                    products={productsByCategory}
-                  />
-                </CardGroup>
-              </Card>
-            ) : null
-          );
-        })}
+        <Row> {/* Adicione esta linha */}
+          {categories.map((categoria, index) => {
+            const productsByCategory = getProductsByCategory(categoria);
+  
+            return (
+              (index === 0 || (index > 0 && categoria !== categories[index - 1])) ? (
+                <Col md="6" key={`${categoria}_${index}`}> {/* Mova a key para aqui */}
+                  <Card>
+                    <CardHeader>{categoria}</CardHeader>
+                    <CardGroup className="d-flex justify-content-center align-items-center">
+                      <CardProduct
+                        category={categoria}
+                        products={productsByCategory}
+                      />
+                    </CardGroup>
+                  </Card>
+                </Col>
+              ) : null
+            );
+          })}
+        </Row> {/* Adicione esta linha */}
       </div>
     </>
   );

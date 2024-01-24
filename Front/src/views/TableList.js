@@ -1,151 +1,77 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
+import { getAllProducts } from "../axios_helper";
 
 import {
   Card,
   CardHeader,
   CardBody,
-  CardTitle,
-  Table,
-  Row,
-  Col
+  Table
 } from "reactstrap";
 
 function Tables() {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    getAllProducts().then((response) => {
+      console.log(response.data);
+      setProducts(response.data);
+    });
+  }, []);
+
+  const totalValueInStock = products.reduce((total, product) => {
+    const price = parseFloat(product.price.replace(',', '.'));
+    return total + (price * product.amount);
+  }, 0);
+
   return (
-    <>
-      <div className="content">
-        <Row>
-          <Col md="12">
-            <Card>
-              <CardHeader>
-                <CardTitle tag="h4">Simple Table</CardTitle>
-              </CardHeader>
-              <CardBody>
-                <Table className="tablesorter" responsive>
-                  <thead className="text-primary">
-                    <tr>
-                      <th>Name</th>
-                      <th>Country</th>
-                      <th>City</th>
-                      <th className="text-center">Salary</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Dakota Rice</td>
-                      <td>Niger</td>
-                      <td>Oud-Turnhout</td>
-                      <td className="text-center">$36,738</td>
-                    </tr>
-                    <tr>
-                      <td>Minerva Hooper</td>
-                      <td>Curaçao</td>
-                      <td>Sinaai-Waas</td>
-                      <td className="text-center">$23,789</td>
-                    </tr>
-                    <tr>
-                      <td>Sage Rodriguez</td>
-                      <td>Netherlands</td>
-                      <td>Baileux</td>
-                      <td className="text-center">$56,142</td>
-                    </tr>
-                    <tr>
-                      <td>Philip Chaney</td>
-                      <td>Korea, South</td>
-                      <td>Overland Park</td>
-                      <td className="text-center">$38,735</td>
-                    </tr>
-                    <tr>
-                      <td>Doris Greene</td>
-                      <td>Malawi</td>
-                      <td>Feldkirchen in Kärnten</td>
-                      <td className="text-center">$63,542</td>
-                    </tr>
-                    <tr>
-                      <td>Mason Porter</td>
-                      <td>Chile</td>
-                      <td>Gloucester</td>
-                      <td className="text-center">$78,615</td>
-                    </tr>
-                    <tr>
-                      <td>Jon Porter</td>
-                      <td>Portugal</td>
-                      <td>Gloucester</td>
-                      <td className="text-center">$98,615</td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </CardBody>
-            </Card>
-          </Col>
-          <Col md="12">
-            <Card className="card-plain">
-              <CardHeader>
-                <CardTitle tag="h4">Table on Plain Background</CardTitle>
-                <p className="category">Here is a subtitle for this table</p>
-              </CardHeader>
-              <CardBody>
-                <Table className="tablesorter" responsive>
-                  <thead className="text-primary">
-                    <tr>
-                      <th>Name</th>
-                      <th>Country</th>
-                      <th>City</th>
-                      <th className="text-center">Salary</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Dakota Rice</td>
-                      <td>Niger</td>
-                      <td>Oud-Turnhout</td>
-                      <td className="text-center">$36,738</td>
-                    </tr>
-                    <tr>
-                      <td>Minerva Hooper</td>
-                      <td>Curaçao</td>
-                      <td>Sinaai-Waas</td>
-                      <td className="text-center">$23,789</td>
-                    </tr>
-                    <tr>
-                      <td>Sage Rodriguez</td>
-                      <td>Netherlands</td>
-                      <td>Baileux</td>
-                      <td className="text-center">$56,142</td>
-                    </tr>
-                    <tr>
-                      <td>Philip Chaney</td>
-                      <td>Korea, South</td>
-                      <td>Overland Park</td>
-                      <td className="text-center">$38,735</td>
-                    </tr>
-                    <tr>
-                      <td>Doris Greene</td>
-                      <td>Malawi</td>
-                      <td>Feldkirchen in Kärnten</td>
-                      <td className="text-center">$63,542</td>
-                    </tr>
-                    <tr>
-                      <td>Mason Porter</td>
-                      <td>Chile</td>
-                      <td>Gloucester</td>
-                      <td className="text-center">$78,615</td>
-                    </tr>
-                    <tr>
-                      <td>Jon Porter</td>
-                      <td>Portugal</td>
-                      <td>Gloucester</td>
-                      <td className="text-center">$98,615</td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-      </div>
-    </>
+    <div className="content">
+      <Card>
+        <CardHeader>
+          <h3>Product Details</h3>
+        </CardHeader>
+        <CardBody>
+          <Table>
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Amount</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Total Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Array.isArray(products) && products.map((product) => {
+                const price = parseFloat(product.price.replace(',', '.'));
+                const totalValue = price * product.amount;
+                console.log("Oq aparece aqui ? ", product);
+                return (
+                  <tr key={product.id}>
+                    <td>
+                      <img
+                        src={`data:image/png;base64,${product.image}`}
+                        alt={product.name}
+                        style={{ maxWidth: "50px", maxHeight: "50px" }}
+                      />
+                    </td>
+                    <td>{product.name}</td>
+                    <td>{product.price}</td>
+                    <td>{product.amount}</td>
+                    <td>{product.description}</td>
+                    <td>{product.categoria.nome}</td>
+                    <td>R${totalValue.toFixed(2)}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table>
+          <h4>Total value in stock: R${totalValueInStock.toFixed(2)}</h4>
+        </CardBody>
+      </Card>
+    </div>
   );
 }
 

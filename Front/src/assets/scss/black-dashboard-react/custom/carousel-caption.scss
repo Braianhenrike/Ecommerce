@@ -2,3 +2,12 @@
   display: block !important;
 }
 
+.custom-carousel {
+  .carousel-item {
+    img {
+      max-height: 300px; 
+      width: auto; 
+      object-fit: cover; 
+    }
+  }
+}
