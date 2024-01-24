@@ -5,17 +5,14 @@ import {
   Row,
   Col,
   Button,
-  CardHeader,
-  CardGroup,
-} from "reactstrap";
-import {
-  Carousel,
-  CarouselItem,
   CarouselControl,
   CarouselCaption,
+  CarouselItem,
+  Carousel,
 } from "reactstrap";
-import { getAllProducts } from "../../axios_helper";
+
 import { useCart } from "components/UseCart/UseCart";
+
 import { useProduct } from "components/ProductContext/ProductContext";
 
 function CardProduct({ category, products }) {
@@ -26,9 +23,6 @@ function CardProduct({ category, products }) {
   const [animating, setAnimating] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const history = useHistory();
-
-  console.log('category ',category)
-  console.log('products ',products)
 
   useEffect(() => {
     const handleWindowSizeChange = () => {
@@ -69,8 +63,7 @@ function CardProduct({ category, products }) {
   };
 
   const slides = Array.isArray(products)
-  ? products.map((product) => (
-      product.categoria.nome === category &&
+    ? products.map((product) =>
       <CarouselItem key={product.id}>
         <img src={`data:image/png;base64,${product.image}`} alt={product.name} />
         <CarouselCaption captionText={product.name} captionHeader={product.price} />
@@ -85,7 +78,7 @@ function CardProduct({ category, products }) {
           </Button>
         </div>
       </CarouselItem>
-    ))
+    )
     : null;
 
   return (
