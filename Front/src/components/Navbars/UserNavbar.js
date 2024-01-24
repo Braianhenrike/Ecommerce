@@ -134,7 +134,7 @@ function UserNavbar(props) {
                   {cart.map((product) => (
                     <DropdownItem key={product.id} className="nav-item">
                       <div>
-                        <img src={`data:image/png;base64,${product.image}`} alt={product.name} />
+                        <img src={`data:image/png;base64,${product.image}`} alt={product.name} style={{ maxWidth: "300px", maxHeight: "300px" }}/>
                       </div>
                       <div className="text-dark">
                         <span>{product.name}</span>

@@ -1,54 +1,18 @@
 import React, { useEffect, useState } from "react";
-
 import { createProduto, createCategoria, getAllCategorias } from '../axios_helper';
-
 import Swal from 'sweetalert2';
-
-import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  FormGroup,
-  Form,
-  Input,
-  Row,
-  Col
-} from "reactstrap";
-
+import { Button, Card, CardHeader, CardBody, CardFooter, FormGroup, Form, Input, Row, Col } from "reactstrap";
 
 function Produtos() {
-  const [produto, setProduto] = useState({
-    name: "",
-    image: "",
-    price: "",
-    amount: "",
-    description: "",
-    categoria: ""
-  });
-  const [produtoCreated, setProdutoCreated] = useState({
-    name: "",
-    image: "",
-    price: "",
-    amount: "",
-    description: "",
-    categoria: ""
-  });
+  const [produto, setProduto] = useState({ name: "", image: "", price: "", amount: "", description: "", categoria: "" });
 
-  const [categoriasID, setCategoriasId] = useState([]);
-  const [categorias, setCategorias] = useState([]);
-  const [novaCategoria, setNovaCategoria] = useState("");
+  const [categoriasID, setCategoriasId] = useState([]); const [categorias, setCategorias] = useState([]); const [novaCategoria, setNovaCategoria] = useState("");
 
-  useEffect(() => {
-    fetchCategorias();
-  }, []);
+  useEffect(() => { fetchCategorias(); }, []);
 
   const fetchCategorias = async () => {
     try {
-      const categoriasResponse = await getAllCategorias();
-      let categoriesVerNomes = categoriasResponse.data;
-      let categoriasVerNomes = categoriesVerNomes.filter((element) => element.nome.trim() !== '');
+      const categoriasResponse = await getAllCategorias(); let categoriesVerNomes = categoriasResponse.data; let categoriasVerNomes = categoriesVerNomes.filter((element) => element.nome.trim() !== '');
 
       setCategorias(categoriasVerNomes);
 
@@ -98,9 +62,8 @@ function Produtos() {
 
 
   const handleCreate = async () => {
-
-
-    if (!produto.name || !produto.image || !produto.price || !produto.amount || !produto.description) {
+    if (!produto.name || !produto.image || !produto.price ||
+      !produto.amount || !produto.description) {
       Swal.fire({
         title: 'Error!',
         text: 'Por favor, preencha todos os campos antes de criar o produto.',
@@ -123,7 +86,7 @@ function Produtos() {
       const categoriaEncontrada = categoriasID.find(
         (categoria) => categoria.nome === produto.categoria
       );
-        console.log("categoriaEncontrada", categoriaEncontrada)
+      console.log("categoriaEncontrada", categoriaEncontrada)
       if (categoriaEncontrada) {
         const produtoCreated = {
           ...produto,
@@ -132,6 +95,12 @@ function Produtos() {
 
         console.log("produto: create", produtoCreated)
         await createProduto(produtoCreated);
+        Swal.fire({
+          title: 'Success!',
+          text: 'Produto criado com sucesso',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
       } else {
         Swal.fire({
           title: 'Error!',

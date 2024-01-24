@@ -89,7 +89,7 @@ function Payment() {
                   <td>{product.name}</td>
                   <td>R${product.price}</td>
                   <td>{product.quantity}</td>
-                  <td>{product.categoria}</td>
+                  <td>{product.categoria.nome}</td>
                   <td>
                     <Button
                       color="danger"
@@ -105,7 +105,7 @@ function Payment() {
           </Table>
           <div>Total Purchase: R${calculateTotalPurchase()}</div>
 
-          
+
         </CardBody>
       </Card>
     </div>
