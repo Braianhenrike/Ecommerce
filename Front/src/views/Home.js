@@ -48,9 +48,9 @@ function Home() {
       console.error("Products is not an array:", products);
       return [];
     }
-
+  
     const produtosDasCategorias = products.filter(
-      (product) => product.categoria && categories.includes(product.categoria.nome));
+      (product) => product.categoria && product.categoria.nome === categoria);
     return produtosDasCategorias;
   };
 
