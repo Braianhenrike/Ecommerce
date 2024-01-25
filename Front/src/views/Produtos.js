@@ -3,10 +3,18 @@ import { createProduto, createCategoria, getAllCategorias } from '../axios_helpe
 import Swal from 'sweetalert2';
 import { Button, Card, CardHeader, CardBody, CardFooter, FormGroup, Form, Input, Row, Col } from "reactstrap";
 
-function Produtos() {
+function Produtos({ product }) {
   const [produto, setProduto] = useState({ name: "", image: "", price: "", amount: "", description: "", categoria: "" });
 
   const [categoriasID, setCategoriasId] = useState([]); const [categorias, setCategorias] = useState([]); const [novaCategoria, setNovaCategoria] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    if (product) {
+      setProduto(product);
+      setIsEditing(true);
+    }
+  }, [product]);
 
   useEffect(() => { fetchCategorias(); }, []);
 
@@ -58,6 +66,9 @@ function Produtos() {
         [name]: type === 'select' ? parseInt(value, 10) : value,
       }));
     }
+  };
+  
+  const handleEdit = () => {
   };
 
 
@@ -245,9 +256,9 @@ function Produtos() {
                   className="btn-fill"
                   color="primary"
                   type="button"
-                  onClick={handleCreate}
+                  onClick={isEditing ? handleEdit : handleCreate}
                 >
-                  Create
+                  {isEditing ? 'Edit' : 'Create'}
                 </Button>
               </CardFooter>
             </Card>
