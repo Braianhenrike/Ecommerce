@@ -17,7 +17,15 @@ function Tables() {
       console.log(response.data);
       setProducts(response.data);
     });
-  }, []);
+  }, [])
+  
+  ;const handleEdit = (product) => {
+    // arrumar edição do produto
+  };
+
+  const handleDelete = (productId) => {
+    // arrumar deletar produto
+  };
 
   const totalValueInStock = products.reduce((total, product) => {
     const price = parseFloat(product.price.replace(',', '.'));
@@ -63,6 +71,10 @@ function Tables() {
                     <td>{product.description}</td>
                     <td>{product.categoria.nome}</td>
                     <td>R${totalValue.toFixed(2)}</td>
+                    <td>
+                      <button onClick={() => handleEdit(product)}>Edit</button>
+                      <button onClick={() => handleDelete(product.id)}>Delete</button>
+                    </td>
                   </tr>
                 );
               })}

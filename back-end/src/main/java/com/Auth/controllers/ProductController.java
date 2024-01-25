@@ -33,4 +33,15 @@ public class ProductController {
 		 return result;
 	
 	}
+    
+    @PutMapping("/admin/{id}")
+    public void updateProduct(@PathVariable String id, @RequestBody ProductRequestDTO data) {
+        Product productData = data.toProduct();
+        productService.update(id, productData);
+    }
+
+    @DeleteMapping("/admin/{id}")
+    public void deleteProduct(@PathVariable String id) {
+        productService.delete(id);
+    }
 }
