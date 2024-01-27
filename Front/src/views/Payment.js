@@ -3,6 +3,7 @@ import { Card, CardHeader, CardBody, Table, Button } from "reactstrap";
 import { useCart } from "components/UseCart/UseCart";
 import { useLocation } from "react-router-dom";
 
+import { CardElement } from "@stripe/react-stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
@@ -12,6 +13,7 @@ function Payment() {
   const elements = useElements();
   const location = useLocation();
 
+  const [paymentMethod, setPaymentMethod] = useState('card');
   const { cart, totalPurchase } = location.state || { cart: [], totalPurchase: 0 };
   const { removeFromCart } = useCart();
   const [cartUpdated, setCartUpdated] = useState(false);
@@ -56,7 +58,10 @@ function Payment() {
   };
 
   const calculateTotalPurchase = () => {
-    return cart.reduce((acc, product) => acc + product.price * product.quantity, 0);
+    return cart.reduce((total, product) => {
+      const price = parseFloat(product.price.replace(',', '.'));
+      return total + (price * product.quantity);
+    }, 0);
   };
 
   return (
@@ -104,7 +109,21 @@ function Payment() {
             </tbody>
           </Table>
           <div>Total Purchase: R${calculateTotalPurchase()}</div>
-
+          <hr />
+          <h4>Payment Method</h4>
+          <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
+            <option value="card">Card</option>
+            {/* Adicione mais opções de pagamento conforme necessário */}
+          </select>
+          {paymentMethod === 'card' && (
+            <div>
+              <h4>Card Details</h4>
+              <CardElement />
+            </div>
+          )}
+          <button disabled={!stripe} onClick={handleSubmit}>
+            {isProcessing ? "Processing..." : "Pay"}
+          </button>
 
         </CardBody>
       </Card>
