@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 
+import Swal from 'sweetalert2';
+
 import { useHistory } from "react-router-dom"; 
 
-import { getAllProducts } from "../axios_helper";
+import { deleteProduct, getAllProducts } from "../axios_helper";
 
 import {
   Card,
@@ -30,8 +32,26 @@ function Tables() {
     });
   };
 
-  const handleDelete = (productId) => {
-    // arrumar deletar produto
+  const handleDelete = async (productId) => {
+    const result = await Swal.fire({
+      title: 'Confirmação',
+      text: `Deseja mesmo deletar o produto?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sim',
+      cancelButtonText: 'Não'
+    });
+  
+    if (result.isConfirmed) {
+      try {
+        await deleteProduct(productId);
+        const updatedProducts = products.filter(product => product.id !== productId);
+        setProducts(updatedProducts);
+        Swal.fire('Deletado!', 'O produto foi deletado.', 'success');
+      } catch (error) {
+        Swal.fire('Erro!', `Erro ao deletar o produto: ${error}`, 'error');
+      }
+    }
   };
 
   const totalValueInStock = products.reduce((total, product) => {
