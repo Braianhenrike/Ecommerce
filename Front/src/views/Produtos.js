@@ -1,17 +1,46 @@
 import React, { useEffect, useState } from "react";
-import { createProduto, createCategoria, getAllCategorias } from '../axios_helper';
+import { createProduto, createCategoria, getAllCategorias, updateProduto } from '../axios_helper';
 import Swal from 'sweetalert2';
 import { Button, Card, CardHeader, CardBody, CardFooter, FormGroup, Form, Input, Row, Col } from "reactstrap";
+import { useLocation } from "react-router-dom";
 
-function Produtos({ product }) {
-  const [produto, setProduto] = useState({ name: "", image: "", price: "", amount: "", description: "", categoria: "" });
+function Produtos() {
+  const [produto, setProduto] = useState({
+    name: "",
+    image: "",
+    price: "",
+    amount: "",
+    description: "",
+    categoria: ""
+  });
 
-  const [categoriasID, setCategoriasId] = useState([]); const [categorias, setCategorias] = useState([]); const [novaCategoria, setNovaCategoria] = useState("");
+  const location = useLocation();
+  const product = location.state?.product;
+  const [categoriasID, setCategoriasId] = useState([]);
+  const [categorias, setCategorias] = useState([]);
+  const [novaCategoria, setNovaCategoria] = useState("");
   const [isEditing, setIsEditing] = useState(false);
 
+  const getCategoriaByName = (name) => {
+    const categoriaEncontrada = categoriasID.find(
+      (categoria) => categoria.nome === name
+    );
+    return categoriaEncontrada;
+  };
+
+  const getCategoriaById = (id) => {
+    const categoriaEncontrada = categoriasID.find(
+      (categoria) => categoria.id === id
+    );
+    return categoriaEncontrada;
+  };
+
+
   useEffect(() => {
+    console.log("product", product);
     if (product) {
-      setProduto(product);
+      const categoria = getCategoriaById(product.categoria);
+      setProduto({ ...product, categoria: product.categoria.nome });
       setIsEditing(true);
     }
   }, [product]);
@@ -33,10 +62,8 @@ function Produtos({ product }) {
         ...objeto,
         id: objeto.id.toString(),
       }))
-      console.log("categoriasComIdNumerico", categoriasComIdNumerico);
       setCategoriasId(categoriasComIdNumerico);
     } catch (error) {
-      console.error("Erro ao buscar categorias:", error.message);
     }
   };
 
@@ -67,8 +94,60 @@ function Produtos({ product }) {
       }));
     }
   };
-  
-  const handleEdit = () => {
+
+  const handleEdit = async () => {
+    if (!produto.name || !produto.image || !produto.price ||
+      !produto.amount || !produto.description) {
+      Swal.fire({
+        title: 'Error!',
+        text: 'Por favor, preencha todos os campos antes de editar o produto.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+      return;
+    }
+
+    try {
+      if (!produto.categoria) {
+        Swal.fire({
+          title: 'Error!',
+          text: 'Por favor, selecione uma categoria antes de editar o produto.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+        return;
+      }
+      const categoriaEncontrada = getCategoriaByName(produto.categoria);
+      if (categoriaEncontrada) {
+        const produtoEdited = {
+          ...produto,
+          categoria: categoriaEncontrada.id,
+        };
+
+        await updateProduto(produto.id, produtoEdited); 
+
+        Swal.fire({
+          title: 'Success!',
+          text: 'Produto editado com sucesso',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
+      } else {
+        Swal.fire({
+          title: 'Error!',
+          text: 'Categoria não encontrada',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        title: 'Error!',
+        text: `Erro ao editar o Produto: ${error.message}`,
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    }
   };
 
 
@@ -94,17 +173,13 @@ function Produtos({ product }) {
         });
         return;
       }
-      const categoriaEncontrada = categoriasID.find(
-        (categoria) => categoria.nome === produto.categoria
-      );
-      console.log("categoriaEncontrada", categoriaEncontrada)
+      const categoriaEncontrada = getCategoriaById(produto.categoria);
       if (categoriaEncontrada) {
         const produtoCreated = {
           ...produto,
           categoria: categoriaEncontrada.id,
         };
 
-        console.log("produto: create", produtoCreated)
         await createProduto(produtoCreated);
         Swal.fire({
           title: 'Success!',

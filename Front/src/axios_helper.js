@@ -24,6 +24,11 @@ export const createCategoria = async (categoria) => {
   return request('POST', '/api/categorias', categoria);
 };
 
+export const updateProduto = async (productId, product) => {
+  console.log("Produto enviado para atualização: ", product);
+  return request('PUT', `/product/admin/${productId}`, product);
+};
+
 export const getAllCategorias = async () => {
   return request('GET', '/api/categorias');
 };
