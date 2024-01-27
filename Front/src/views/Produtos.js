@@ -173,7 +173,7 @@ function Produtos() {
         });
         return;
       }
-      const categoriaEncontrada = getCategoriaById(produto.categoria);
+      const categoriaEncontrada = getCategoriaByName(produto.categoria);
       if (categoriaEncontrada) {
         const produtoCreated = {
           ...produto,

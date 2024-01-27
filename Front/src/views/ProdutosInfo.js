@@ -30,7 +30,7 @@ function ProdutosInfo() {
             <strong>Preço:</strong> {selectedProduct.price}<br />
             <strong>Quantidade:</strong> {selectedProduct.amount}<br />
             <strong>Descrição:</strong> {selectedProduct.description}
-            <strong>Categoria:</strong> {selectedProduct.categoria}
+            <strong>Categoria:</strong> {selectedProduct.categoria.name}
           </CardText>
           <Button color="primary" onClick={handleAddToCart}>
             Adicionar ao Carrinho

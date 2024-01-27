@@ -19,23 +19,30 @@ export const createProduto = async (product) => {
   return request('POST', `/product/admin`, product);
 };
 
-export const createCategoria = async (categoria) => {
-  console.log("Categoria enviada: ", categoria);
-  return request('POST', '/api/categorias', categoria);
-};
-
 export const updateProduto = async (productId, product) => {
   console.log("Produto enviado para atualização: ", product);
   return request('PUT', `/product/admin/${productId}`, product);
 };
 
-export const getAllCategorias = async () => {
-  return request('GET', '/api/categorias');
+export const deleteProduct = async (productId) => {
+  return request('DELETE', `/product/admin/${productId}`);
 };
 
 export const getAllProducts = async () => {
   return request('GET', '/product/home');
 };
+
+export const createCategoria = async (categoria) => {
+  console.log("Categoria enviada: ", categoria);
+  return request('POST', '/api/categorias', categoria);
+};
+
+
+
+export const getAllCategorias = async () => {
+  return request('GET', '/api/categorias');
+};
+
 
 axios.defaults.baseURL = 'http://localhost:8080';
 
