@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 
+import { useHistory } from "react-router-dom"; 
+
 import { getAllProducts } from "../axios_helper";
 
 import {
@@ -11,16 +13,21 @@ import {
 
 function Tables() {
   const [products, setProducts] = useState([]);
+  const history = useHistory(); 
+
 
   useEffect(() => {
     getAllProducts().then((response) => {
-      console.log(response.data);
       setProducts(response.data);
     });
-  }, [])
+  }, []);
   
-  ;const handleEdit = (product) => {
-    // arrumar edição do produto
+  const handleEdit = (product) => {
+    console.log("product1", product);
+    history.push({
+      pathname: `/user/produtos/${product.id}`,
+      state: { product: product }
+    });
   };
 
   const handleDelete = (productId) => {
@@ -55,7 +62,6 @@ function Tables() {
               {Array.isArray(products) && products.map((product) => {
                 const price = parseFloat(product.price.replace(',', '.'));
                 const totalValue = price * product.amount;
-                console.log("Oq aparece aqui ? ", product);
                 return (
                   <tr key={product.id}>
                     <td>
