@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, CardHeader, CardBody, Table, Button } from "reactstrap";
 import { useCart } from "components/UseCart/UseCart";
 import { useLocation } from "react-router-dom";
-
+import PaymentForm from "components/CreditCard/CreditCard";
 import { CardElement } from "@stripe/react-stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
@@ -118,6 +118,7 @@ function Payment() {
           {paymentMethod === 'card' && (
             <div>
               <h4>Card Details</h4>
+              <PaymentForm method={paymentMethod} onSubmit={handleSubmit} /> {/* Use PaymentForm */}
               <CardElement />
             </div>
           )}
