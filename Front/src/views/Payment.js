@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardHeader, CardBody, Table, Button } from "reactstrap";
+
+import Cards from 'react-credit-cards';
 import { useCart } from "components/UseCart/UseCart";
 import { useLocation } from "react-router-dom";
 import PaymentForm from "components/CreditCard/CreditCard";
 import { CardElement } from "@stripe/react-stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { loadStripe } from "@stripe/stripe-js";
+import 'react-credit-cards/es/styles-compiled.css';
 import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 
 function Payment() {
@@ -20,6 +24,36 @@ function Payment() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [message, setMessage] = useState(null);
   const stripePromise = loadStripe('sk_test_Ho24N7La5CVDtbmpjc377lJI');
+  const [cvc, setCvc] = useState('');
+  const [expiry, setExpiry] = useState('');
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
+  const [focus, setFocus] = useState('');
+
+  const handleInputFocus = (e) => {
+    setFocus(e.target.name);
+  }
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+
+    switch (name) {
+      case 'number':
+        setNumber(value);
+        break;
+      case 'name':
+        setName(value);
+        break;
+      case 'expiry':
+        setExpiry(value);
+        break;
+      case 'cvc':
+        setCvc(value);
+        break;
+      default:
+        break;
+    }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -118,8 +152,53 @@ function Payment() {
           {paymentMethod === 'card' && (
             <div>
               <h4>Card Details</h4>
-              <PaymentForm method={paymentMethod} onSubmit={handleSubmit} /> {/* Use PaymentForm */}
-              <CardElement />
+              <TransitionGroup>
+                <CSSTransition
+                  key={paymentMethod}
+                  timeout={500}
+                  classNames="fade"
+                >
+                  <div id="PaymentForm">
+                    <Cards
+                      cvc={cvc}
+                      expiry={expiry}
+                      focused={focus}
+                      name={name}
+                      number={number}
+                    />
+                    <form>
+                      <input
+                        type="tel"
+                        name="number"
+                        placeholder="Card Number"
+                        onChange={handleInputChange}
+                        onFocus={handleInputFocus}
+                      />
+                      <input
+                        type="tel"
+                        name="name"
+                        placeholder="Name"
+                        onChange={handleInputChange}
+                        onFocus={handleInputFocus}
+                      />
+                      <input
+                        type="tel"
+                        name="expiry"
+                        placeholder="Valid Thru"
+                        onChange={handleInputChange}
+                        onFocus={handleInputFocus}
+                      />
+                      <input
+                        type="tel"
+                        name="cvc"
+                        placeholder="CVC"
+                        onChange={handleInputChange}
+                        onFocus={handleInputFocus}
+                      />
+                    </form>
+                  </div>
+                </CSSTransition>
+              </TransitionGroup>
             </div>
           )}
           <button disabled={!stripe} onClick={handleSubmit}>
