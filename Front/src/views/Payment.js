@@ -55,28 +55,61 @@ function Payment() {
     }
   }
 
+  const validateInput = () => {
+    const cardNumberRegex = /^[0-9]{16}$/;
+    const expiryDateRegex = /^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$/;
+    const cvcRegex = /^[0-9]{3,4}$/;
+    const nameRegex = /^[a-zA-Z ]{2,30}$/;
+  
+    if (!cardNumberRegex.test(number)) {
+      setMessage('Invalid card number');
+      return false;
+    }
+  
+    if (!expiryDateRegex.test(expiry)) {
+      setMessage('Invalid expiry date');
+      return false;
+    }
+  
+    if (!cvcRegex.test(cvc)) {
+      setMessage('Invalid CVC');
+      return false;
+    }
+  
+    if (!nameRegex.test(name)) {
+      setMessage('Invalid name');
+      return false;
+    }
+  
+    return true;
+  }
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
+    if (!validateInput()) {
+      return;
+    }
+  
     if (!stripe || !elements) {
       return;
     }
-
+  
     setIsProcessing(true);
-
+  
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
         return_url: `${window.location.origin}/completion`,
       },
     });
-
+  
     if (error?.type === "card_error" || error?.type === "validation_error") {
       setMessage(error.message);
     } else {
       setMessage("An unexpected error occurred.");
     }
-
+  
     setIsProcessing(false);
   };
 
