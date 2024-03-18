@@ -17,27 +17,28 @@ import com.Auth.services.ProductService;
 @RequestMapping("product")
 public class ProductController {
 
-	@Autowired
-	private ProductService productService;
+    @Autowired
+    private ProductService productService;
 
     @PostMapping("/admin")
     public void saveProduct(@RequestBody ProductRequestDTO data) {
         System.out.println("Received data: " + data);
         Product productData = data.toProduct();
-        productService.save(productData, data.categoria().getNome());
+        productService.save(productData);
+    }
+
+    @GetMapping("/home")
+    public List<ProductResponseDTO> findAll(){
+        List<ProductResponseDTO> result = productService.findAll();
+        return result;
+
     }
 
     @PutMapping("/admin/{id}")
     public void updateProduct(@PathVariable String id, @RequestBody ProductRequestDTO data) {
         Product productData = data.toProduct();
-        productService.update(id, productData, data.categoria().getNome());
+        productService.update(id, productData);
     }
-
-    @GetMapping("/home")
-	public List<ProductResponseDTO> findAll(){
-		return productService.findAll();
-
-	}
 
     @DeleteMapping("/admin/{id}")
     public void deleteProduct(@PathVariable String id) {
