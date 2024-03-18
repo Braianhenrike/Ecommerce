@@ -186,7 +186,7 @@ function UserProfile() {
                     <img
                       alt="..."
                       className="avatar"
-                      src={require("assets/img/emilyz.jpg")}
+                      src={require("assets/img/james.jpg")}
                     />
                     <h5 className="title">{user.login}</h5>
                   </a>

@@ -9,7 +9,6 @@ import jakarta.persistence.*;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @EqualsAndHashCode
 public class Categoria {
 	

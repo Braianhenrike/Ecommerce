@@ -22,23 +22,22 @@ public class ProductController {
 
     @PostMapping("/admin")
     public void saveProduct(@RequestBody ProductRequestDTO data) {
-    	System.out.println("Received data: " + data);
-		Product productData = data.toProduct();
-		productService.save(productData);
-	}
-    
-    @GetMapping("/home")
-	public List<ProductResponseDTO> findAll(){
-		List<ProductResponseDTO> result = productService.findAll();
-		 return result;
-	
-	}
-    
+        System.out.println("Received data: " + data);
+        Product productData = data.toProduct();
+        productService.save(productData, data.categoria().getNome());
+    }
+
     @PutMapping("/admin/{id}")
     public void updateProduct(@PathVariable String id, @RequestBody ProductRequestDTO data) {
         Product productData = data.toProduct();
-        productService.update(id, productData);
+        productService.update(id, productData, data.categoria().getNome());
     }
+
+    @GetMapping("/home")
+	public List<ProductResponseDTO> findAll(){
+		return productService.findAll();
+
+	}
 
     @DeleteMapping("/admin/{id}")
     public void deleteProduct(@PathVariable String id) {

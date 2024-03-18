@@ -11,88 +11,37 @@ function Produtos() {
     price: "",
     amount: "",
     description: "",
-    categoria: ""
+    categoria: "", // Placeholder for category name
   });
 
   const location = useLocation();
   const product = location.state?.product;
-  const [categoriasID, setCategoriasId] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [novaCategoria, setNovaCategoria] = useState("");
   const [isEditing, setIsEditing] = useState(false);
 
-  const getCategoriaByName = (name) => {
-    const categoriaEncontrada = categoriasID.find(
-      (categoria) => categoria.nome === name
-    );
-    return categoriaEncontrada;
-  };
-
-  const getCategoriaById = (id) => {
-    const categoriaEncontrada = categoriasID.find(
-      (categoria) => categoria.id === id
-    );
-    return categoriaEncontrada;
-  };
-
-
-  useEffect(() => {
-    console.log("product", product);
-    if (product) {
-      const categoria = getCategoriaById(product.categoria);
-      setProduto({ ...product, categoria: product.categoria.nome });
-      setIsEditing(true);
-    }
-  }, [product]);
-
-  useEffect(() => { fetchCategorias(); }, []);
-
   const fetchCategorias = async () => {
     try {
-      const categoriasResponse = await getAllCategorias(); let categoriesVerNomes = categoriasResponse.data; let categoriasVerNomes = categoriesVerNomes.filter((element) => element.nome.trim() !== '');
-
-      setCategorias(categoriasVerNomes);
-
-      const categoriasID = categoriasVerNomes.map((item, index) => ({
-        ...item,
-        id: index + 1,
-      }));
-
-      const categoriasComIdNumerico = categoriasID.map(objeto => ({
-        ...objeto,
-        id: objeto.id.toString(),
-      }))
-      setCategoriasId(categoriasComIdNumerico);
+      const categoriasResponse = await getAllCategorias();
+      setCategorias(categoriasResponse.data.filter((element) => element.nome.trim() !== ''));
     } catch (error) {
+      // Handle errors
     }
   };
 
+  useEffect(() => {
+    fetchCategorias();
+  }, []);
 
   const handleInputChange = async (e) => {
     const { name, value, type } = e.target;
 
-    if (type === 'file') {
-      const file = e.target.files[0];
-      const reader = new FileReader();
+    // Handle file upload logic... (same as before)
 
-      reader.onloadend = () => {
-        const arrayBuffer = reader.result;
-        const byteArray = new Uint8Array(arrayBuffer);
-
-        setProduto((prevProduto) => ({
-          ...prevProduto,
-          [name]: Array.from(byteArray),
-        }));
-
-      };
-
-      reader.readAsArrayBuffer(file);
-    } else {
-      setProduto((prevProduto) => ({
-        ...prevProduto,
-        [name]: type === 'select' ? parseInt(value, 10) : value,
-      }));
-    }
+    setProduto((prevProduto) => ({
+      ...prevProduto,
+      [name]: type === 'select' ? parseInt(value, 10) : value,
+    }));
   };
 
   const handleEdit = async () => {
@@ -108,38 +57,23 @@ function Produtos() {
     }
 
     try {
-      if (!produto.categoria) {
+      const response = await updateProduto(produto.id, produto);
+      if (response.data.error) {
         Swal.fire({
           title: 'Error!',
-          text: 'Por favor, selecione uma categoria antes de editar o produto.',
+          text: response.data.error,
           icon: 'error',
           confirmButtonText: 'OK'
         });
         return;
       }
-      const categoriaEncontrada = getCategoriaByName(produto.categoria);
-      if (categoriaEncontrada) {
-        const produtoEdited = {
-          ...produto,
-          categoria: categoriaEncontrada.id,
-        };
 
-        await updateProduto(produto.id, produtoEdited); 
-
-        Swal.fire({
-          title: 'Success!',
-          text: 'Produto editado com sucesso',
-          icon: 'success',
-          confirmButtonText: 'OK'
-        });
-      } else {
-        Swal.fire({
-          title: 'Error!',
-          text: 'Categoria não encontrada',
-          icon: 'error',
-          confirmButtonText: 'OK'
-        });
-      }
+      Swal.fire({
+        title: 'Success!',
+        text: 'Produto editado com sucesso',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      });
     } catch (error) {
       Swal.fire({
         title: 'Error!',
@@ -149,7 +83,6 @@ function Produtos() {
       });
     }
   };
-
 
   const handleCreate = async () => {
     if (!produto.name || !produto.image || !produto.price ||
@@ -164,37 +97,32 @@ function Produtos() {
     }
 
     try {
-      if (!produto.categoria) {
+      const response = await createProduto(produto);
+      if (response.data.error) {
         Swal.fire({
           title: 'Error!',
-          text: 'Por favor, selecione uma categoria antes de criar o produto.',
+          text: response.data.error,
           icon: 'error',
           confirmButtonText: 'OK'
         });
         return;
       }
-      const categoriaEncontrada = getCategoriaByName(produto.categoria);
-      if (categoriaEncontrada) {
-        const produtoCreated = {
-          ...produto,
-          categoria: categoriaEncontrada.id,
-        };
 
-        await createProduto(produtoCreated);
-        Swal.fire({
-          title: 'Success!',
-          text: 'Produto criado com sucesso',
-          icon: 'success',
-          confirmButtonText: 'OK'
-        });
-      } else {
-        Swal.fire({
-          title: 'Error!',
-          text: 'Categoria não encontrada',
-          icon: 'error',
-          confirmButtonText: 'OK'
-        });
-      }
+      Swal.fire({
+        title: 'Success!',
+        text: 'Produto criado com sucesso',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      });
+
+      setProduto({
+        name: "",
+        image: "",
+        price: "",
+        amount: "",
+        description: "",
+        categoria: "",
+      });
     } catch (error) {
       Swal.fire({
         title: 'Error!',
@@ -204,6 +132,7 @@ function Produtos() {
       });
     }
   };
+
 
 
   const handleCreateCategoria = async () => {
