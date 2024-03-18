@@ -11,15 +11,24 @@ function Produtos() {
     price: "",
     amount: "",
     description: "",
+<<<<<<< HEAD
     categoria: "", // Placeholder for category name
+=======
+    categoria: ""
+>>>>>>> 081e50a92799b8b39cad2f5900781af36e42e3d3
   });
 
   const location = useLocation();
   const product = location.state?.product;
+<<<<<<< HEAD
+=======
+  const [categoriasID, setCategoriasId] = useState([]);
+>>>>>>> 081e50a92799b8b39cad2f5900781af36e42e3d3
   const [categorias, setCategorias] = useState([]);
   const [novaCategoria, setNovaCategoria] = useState("");
   const [isEditing, setIsEditing] = useState(false);
 
+<<<<<<< HEAD
   const fetchCategorias = async () => {
     try {
       const categoriasResponse = await getAllCategorias();
@@ -32,16 +41,89 @@ function Produtos() {
   useEffect(() => {
     fetchCategorias();
   }, []);
+=======
+  const getCategoriaByName = (name) => {
+    const categoriaEncontrada = categoriasID.find(
+      (categoria) => categoria.nome === name
+    );
+    return categoriaEncontrada;
+  };
+
+  const getCategoriaById = (id) => {
+    const categoriaEncontrada = categoriasID.find(
+      (categoria) => categoria.id === id
+    );
+    return categoriaEncontrada;
+  };
+
+
+  useEffect(() => {
+    console.log("product", product);
+    if (product) {
+      const categoria = getCategoriaById(product.categoria);
+      setProduto({ ...product, categoria: product.categoria.nome });
+      setIsEditing(true);
+    }
+  }, [product]);
+
+  useEffect(() => { fetchCategorias(); }, []);
+
+  const fetchCategorias = async () => {
+    try {
+      const categoriasResponse = await getAllCategorias(); let categoriesVerNomes = categoriasResponse.data; let categoriasVerNomes = categoriesVerNomes.filter((element) => element.nome.trim() !== '');
+
+      setCategorias(categoriasVerNomes);
+
+      const categoriasID = categoriasVerNomes.map((item, index) => ({
+        ...item,
+        id: index + 1,
+      }));
+
+      const categoriasComIdNumerico = categoriasID.map(objeto => ({
+        ...objeto,
+        id: objeto.id.toString(),
+      }))
+      setCategoriasId(categoriasComIdNumerico);
+    } catch (error) {
+    }
+  };
+
+>>>>>>> 081e50a92799b8b39cad2f5900781af36e42e3d3
 
   const handleInputChange = async (e) => {
     const { name, value, type } = e.target;
 
+<<<<<<< HEAD
     // Handle file upload logic... (same as before)
 
     setProduto((prevProduto) => ({
       ...prevProduto,
       [name]: type === 'select' ? parseInt(value, 10) : value,
     }));
+=======
+    if (type === 'file') {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        const arrayBuffer = reader.result;
+        const byteArray = new Uint8Array(arrayBuffer);
+
+        setProduto((prevProduto) => ({
+          ...prevProduto,
+          [name]: Array.from(byteArray),
+        }));
+
+      };
+
+      reader.readAsArrayBuffer(file);
+    } else {
+      setProduto((prevProduto) => ({
+        ...prevProduto,
+        [name]: type === 'select' ? parseInt(value, 10) : value,
+      }));
+    }
+>>>>>>> 081e50a92799b8b39cad2f5900781af36e42e3d3
   };
 
   const handleEdit = async () => {
@@ -57,16 +139,24 @@ function Produtos() {
     }
 
     try {
+<<<<<<< HEAD
       const response = await updateProduto(produto.id, produto);
       if (response.data.error) {
         Swal.fire({
           title: 'Error!',
           text: response.data.error,
+=======
+      if (!produto.categoria) {
+        Swal.fire({
+          title: 'Error!',
+          text: 'Por favor, selecione uma categoria antes de editar o produto.',
+>>>>>>> 081e50a92799b8b39cad2f5900781af36e42e3d3
           icon: 'error',
           confirmButtonText: 'OK'
         });
         return;
       }
+<<<<<<< HEAD
 
       Swal.fire({
         title: 'Success!',
@@ -74,6 +164,31 @@ function Produtos() {
         icon: 'success',
         confirmButtonText: 'OK'
       });
+=======
+      const categoriaEncontrada = getCategoriaByName(produto.categoria);
+      if (categoriaEncontrada) {
+        const produtoEdited = {
+          ...produto,
+          categoria: categoriaEncontrada.id,
+        };
+
+        await updateProduto(produto.id, produtoEdited); 
+
+        Swal.fire({
+          title: 'Success!',
+          text: 'Produto editado com sucesso',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
+      } else {
+        Swal.fire({
+          title: 'Error!',
+          text: 'Categoria não encontrada',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+>>>>>>> 081e50a92799b8b39cad2f5900781af36e42e3d3
     } catch (error) {
       Swal.fire({
         title: 'Error!',
@@ -84,6 +199,10 @@ function Produtos() {
     }
   };
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 081e50a92799b8b39cad2f5900781af36e42e3d3
   const handleCreate = async () => {
     if (!produto.name || !produto.image || !produto.price ||
       !produto.amount || !produto.description) {
@@ -97,16 +216,24 @@ function Produtos() {
     }
 
     try {
+<<<<<<< HEAD
       const response = await createProduto(produto);
       if (response.data.error) {
         Swal.fire({
           title: 'Error!',
           text: response.data.error,
+=======
+      if (!produto.categoria) {
+        Swal.fire({
+          title: 'Error!',
+          text: 'Por favor, selecione uma categoria antes de criar o produto.',
+>>>>>>> 081e50a92799b8b39cad2f5900781af36e42e3d3
           icon: 'error',
           confirmButtonText: 'OK'
         });
         return;
       }
+<<<<<<< HEAD
 
       Swal.fire({
         title: 'Success!',
@@ -123,6 +250,30 @@ function Produtos() {
         description: "",
         categoria: "",
       });
+=======
+      const categoriaEncontrada = getCategoriaByName(produto.categoria);
+      if (categoriaEncontrada) {
+        const produtoCreated = {
+          ...produto,
+          categoria: categoriaEncontrada.id,
+        };
+
+        await createProduto(produtoCreated);
+        Swal.fire({
+          title: 'Success!',
+          text: 'Produto criado com sucesso',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
+      } else {
+        Swal.fire({
+          title: 'Error!',
+          text: 'Categoria não encontrada',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+>>>>>>> 081e50a92799b8b39cad2f5900781af36e42e3d3
     } catch (error) {
       Swal.fire({
         title: 'Error!',
@@ -134,7 +285,10 @@ function Produtos() {
   };
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 081e50a92799b8b39cad2f5900781af36e42e3d3
   const handleCreateCategoria = async () => {
     try {
       await createCategoria({ nome: novaCategoria });

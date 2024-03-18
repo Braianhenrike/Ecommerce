@@ -32,6 +32,17 @@ var routes = [
     component: ProdutosInfo,
     layout: "/user",
     admin: true,
+<<<<<<< HEAD
+=======
+  },
+  {
+    path: "/notifications",
+    name: "Categorias",
+    icon: "tim-icons icon-bell-55",
+    component: Notifications,
+    layout: "/user",
+    admin: false,
+>>>>>>> 081e50a92799b8b39cad2f5900781af36e42e3d3
   },
   {
     path: "/tables",
