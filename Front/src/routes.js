@@ -34,14 +34,6 @@ var routes = [
     admin: true,
   },
   {
-    path: "/notifications",
-    name: "Categorias",
-    icon: "tim-icons icon-bell-55",
-    component: Notifications,
-    layout: "/user",
-    admin: false,
-  },
-  {
     path: "/tables",
     name: "Banco de dados",
     icon: "tim-icons icon-puzzle-10",
