@@ -1,4 +1,3 @@
-
 // Global settings
 
 $enable-caret:              true !default;
@@ -763,16 +762,6 @@ $full-width:                        100% !default;
 $navbar-padding:                    10px 15px !default;
 
 
-// Alerts
-
-$alert-padding-y: .9rem !default;
-$alert-padding-x: 1.25rem !default;
-$alert-border-radius: $border-radius-sm !default;
-
-$alert-bg-level: -2 !default;
-$alert-border-level: -2 !default;
-$alert-color-level: 0 !default;
-
 
 // List group
 
@@ -810,80 +799,6 @@ $close-hover-color:                 rgba(0, 0, 0, .9);
 $close-text-shadow:                 none !default;
 
 
-// Popovers
-
-$popover-font-size:                 $font-size-sm !default;
-$popover-bg:                        $white !default;
-$popover-max-width:                 276px !default;
-$popover-border-width:              1px !default;
-$popover-border-color:              rgba($black, .05);
-$popover-border-radius:             $border-radius-lg !default;
-$popover-box-shadow:                0px .5rem 2rem 0px rgba($black, .2);
-
-$popover-header-bg:                 $popover-bg !default;
-$popover-header-color:              $headings-color !default;
-$popover-header-padding-y:          .75rem !default;
-$popover-header-padding-x:          .75rem !default;
-
-$popover-body-color:                $body-color !default;
-$popover-body-padding-y:            $popover-header-padding-y !default;
-$popover-body-padding-x:            $popover-header-padding-x !default;
-
-$popover-arrow-width:               1.5rem !default;
-$popover-arrow-height:              .75rem !default;
-$popover-arrow-color:               $popover-bg !default;
-
-$popover-arrow-outer-color:         transparent !default;
-
-// Breadcrumbs
-
-$breadcrumb-bg:                     $black-states !default;
-$breadcrumb-divider-color:          $white !default;
-$breadcrumb-active-color:           $white !default;
-
-
-
-
-// Badges
-
-$badge-font-size:                   $font-size-xs !default;
-$badge-font-weight:                 $font-weight-extra-bold !default;
-$badge-padding-y:                   .25rem !default;
-$badge-padding-x:                   .5rem !default;
-$badge-border-radius:               $border-radius !default;
-$badge-text-transfom:               uppercase;
-
-$badge-pill-padding-x:              .875em !default;
-$badge-pill-border-radius:          $border-radius-xl !default;
-
-$badge-circle-size:                 2rem;
-
-// Pagination
-
-$pagination-padding-y:                0 !default;
-$pagination-padding-x:                .6875rem !default;
-
-
-$pagination-color:                  $white !default;
-$pagination-bg:                     transparent  !default;
-$pagination-border-width:           $border-width !default;
-$pagination-border-color:           $gray-300 !default;
-
-//$pagination-focus-box-shadow:       $btn-hover-box-shadow !default;
-
-$pagination-hover-color:            $gray-600 !default;
-$pagination-hover-bg:               $gray-300 !default;
-$pagination-hover-border-color:     $gray-300 !default;
-
-$pagination-active-color:           $component-active-color !default;
-$pagination-active-bg:              $component-active-bg !default;
-$pagination-active-border-color:    $pagination-active-bg !default;
-$pagination-active-box-shadow:      $btn-hover-box-shadow !default;
-
-$pagination-disabled-color:         $gray-600 !default;
-$pagination-disabled-bg:            transparent !default;
-$pagination-disabled-border-color:  $gray-300 !default;
-
 
 // Cards
 
@@ -904,22 +819,6 @@ $card-img-overlay-padding:          1.25rem !default;
 $card-columns-count:                3 !default;
 $card-columns-gap:                  1.25rem !default;
 $card-columns-margin:               $card-spacer-y !default;
-
-// Tooltips
-
-$tooltip-font-size:                 $font-size-sm !default;
-$tooltip-max-width:                 200px !default;
-$tooltip-color:                     $black !default;
-$tooltip-bg:                        $white !default;
-$tooltip-border-radius:             $border-radius !default;
-$tooltip-opacity:                   .9 !default;
-$tooltip-padding-y:                 .25rem !default;
-$tooltip-padding-x:                 .5rem !default;
-$tooltip-margin:                    0 !default;
-
-$tooltip-arrow-width:               .8rem !default;
-$tooltip-arrow-height:              .4rem !default;
-$tooltip-arrow-color:               $tooltip-bg !default;
 
 // Modals
 
@@ -951,35 +850,6 @@ $progress-bg:                       rgba(0, 0, 0, 0.3) !default;
 $progress-border-radius:            $border-radius-xl !default;
 $progress-box-shadow:               0px 0px 0px 3px rgba(0, 0, 0, 0.3) !default;
 $progress-bar-color:                $white !default;
-
-// Datepicker
-
-$datepicker-border-radius: $card-border-radius !default;
-$datepicker-dropdown-padding: 20px 22px !default;
-
-$datepicker-cell-transition: $transition-base !default;
-$datepicker-cell-hover-background: lighten($gray-400, 55%);
-$datepicker-cell-border-radius: 50% !default;
-$datepicker-cell-width: 36px !default;
-$datepicker-cell-height: 36px !default;
-
-$datepicker-disabled-cell-color: $gray-300 !default;
-$datepicker-disabled-old-new-color: $gray-500 !default;
-
-$datepicker-header-cell-border-radius: $border-radius !default;
-
-$datepicker-active-color: $white !default;
-$datepicker-active-background: theme-color("primary") !default;
-$datepicker-active-box-shadow:      none !default;
-
-$datepicker-range-background: theme-color("primary") !default;
-$datepicker-range-cell-focused-background: darken($datepicker-range-background, 5%);
-$datepicker-range-color: $white !default;
-$datepicker-range-highlighted-bg: $gray-200 !default;
-
-$datepicker-dropdown-border: lighten($gray-400, 40%);
-$datepicker-dropdown-bg: $white !default;
-$datepicker-highlighted-bg: $datepicker-active-background !default;
 
 
 // Footer

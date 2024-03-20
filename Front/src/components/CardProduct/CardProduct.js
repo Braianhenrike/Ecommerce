@@ -66,7 +66,7 @@ function CardProduct({ category, products }) {
     ? products.map((product) =>
       <CarouselItem key={product.id}>
         <img src={`data:image/png;base64,${product.image}`} alt={product.name} />
-        <CarouselCaption captionText={product.name} captionHeader={<span style={{ color: 'green' }}>{product.price}</span>} />
+        <CarouselCaption captionText={product.name} captionHeader={<span style={{ color: 'red' }}>{product.price}</span>} />
         <div style={{ position: 'absolute', top: 10, width: '100%', right: '-35%', textAlign: 'center', zIndex: 10 }}>
           <Button onClick={() => handleProdutoClick(product)}>
             <i className="tim-icons icon-cart" />

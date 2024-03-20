@@ -330,10 +330,6 @@
   .bar3 {
     outline: 1px solid transparent;
   }
-  .bar1 {
-    top: 0px;
-    @include bar-animation($topbar-back);
-  }
   .bar2 {
     opacity: 1;
   }
